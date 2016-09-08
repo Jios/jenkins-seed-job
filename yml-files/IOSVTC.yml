@@ -1,0 +1,25 @@
+---
+host_http: http://stash.tutk.com:7990
+host_ssh: ssh://git@stash.tutk.com:7999
+project_key: IOSVTC
+project_name: iOS_Vtech
+
+branchNames: 
+  - '*/master'
+  - '*/develop'
+  - '*/release'
+  - '*/feature/*'
+  - '*/hotfix/*'
+  - '*/bugfix/*'
+
+repos:
+  - repo: smarthome-baseapp
+    job_label: 'ios'
+    scm_schedule: '@daily'
+    email_list: 
+      - jian_li@tutk.com
+      - vita_lin@tutk.com
+      - stanley_huang@tutk.com
+      - yiting_cheng@tutk.com
+      - keith_wang@tutk.com
+      - gore_chiu@tutk.com
