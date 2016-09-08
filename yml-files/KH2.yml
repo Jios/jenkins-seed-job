@@ -1,0 +1,26 @@
+---
+host_http: http://stash.tutk.com:7990
+host_ssh: ssh://git@stash.tutk.com:7999
+project_key: KH2
+project_name: KalayHome2.0
+
+branchNames: 
+  - '*/master'
+  - '*/develop'
+  - '*/release'
+  - '*/feature/*'
+  - '*/hotfix/*'
+  - '*/bugfix/*'
+
+repos:
+  - repo: Android_SourceCode
+    job_label: 'android'
+    scm_schedule: '@daily'
+    email_list: 
+      - howard_chu@tutk.com
+      - chain_chen@tutk.com
+      - cj_huang@tutk.com
+      - vita_lin@tutk.com
+      - stanley_huang@tutk.com
+      - yiting_cheng@tutk.com
+      - jian_li@tutk.com
