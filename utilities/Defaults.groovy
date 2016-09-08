@@ -66,6 +66,7 @@ class Defaults
 	{
 	    context.environmentVariables 
 	    {
+	    	script('touch prebuild.properties; touch postbuild.properties')
 	        env('PROJECT_NAME', projectName)
 	        env('PROJECT_KEY', projectKey)
 	        env('REPO_NAME', repoName)
