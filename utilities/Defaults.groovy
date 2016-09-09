@@ -10,12 +10,6 @@ class Defaults
 	def jenkins_url = System.getenv().JENKINS_URL
 
 	/*
-	 *  slack info
-	 */ 
-	def slack_token   = 'nLIgN4qKWOKH32e5mXiuKCww'
-	def slack_team    = 'tutk-kalay'
-
-	/*
 	 *  log rotator
 	 */
 	def ndaysToKeep         = 30
@@ -51,7 +45,7 @@ class Defaults
 	        Publishers publishers = new Publishers()
 	        publishers.setJiraIssueUpdater(it)
 	        publishers.setMailer(it, email_list)
-	        publishers.setSlackNotifier(it, slack_token, slack_team, slack_channel, jenkins_url)
+	        publishers.setSlackNotifier(it, slack_channel)
 		}
 
 		if(optionalClosure) 

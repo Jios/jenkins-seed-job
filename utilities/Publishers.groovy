@@ -103,15 +103,15 @@ class Publishers
 		}
     }
 
-    void setSlackNotifier(def context, slack_token, slack_team, slack_channel, jenkins_url)
+    void setSlackNotifier(def context, slack_channel)
     {
     	context.publishers
     	{
 			slackNotifier
 			{
-				teamDomain(slack_team)
-				authToken(slack_token)
-				buildServerUrl(jenkins_url)
+				teamDomain('')
+				authToken('')
+				buildServerUrl('')
 				room(slack_channel)
 				startNotification(true)
 				notifySuccess(true)
