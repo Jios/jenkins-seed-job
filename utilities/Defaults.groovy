@@ -18,7 +18,7 @@ class Defaults
 	def artifactNToKeep     = 14
 
 	String properties_file = 'properties/prebuild.properties'
-
+	String slack_url = 'https://hooks.slack.com/services/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'
 
 	void getBaseJob(def job, job_label, slack_channel, email_list, Closure optionalClosure = null)
 	{
@@ -66,6 +66,7 @@ class Defaults
 	        env('REPO_NAME', repoName)
 	        env('BRANCH_NAMES', branchNames)
 	        env('BRANCH_NAME', '${GIT_BRANCH}')
+	        env('SLACK_URL', slack_url)
 	        propertiesFile(properties_file)
 	        keepBuildVariables(true)
 	    }
