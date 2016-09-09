@@ -2,7 +2,7 @@ package utilities
 
 class Steps
 {
-	def properties_file = 'postbuild.properties'
+	def properties_file = 'properties/postbuild.properties'
 	
 	void setBuildScript (def context, sh_command)
 	{
