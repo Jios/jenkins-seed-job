@@ -129,7 +129,7 @@ ymlFiles.eachFileRecurse (FileType.FILES) { file ->
             publishers.setJiraIssue(delegate)
             //publishers.setJiraVersion(delegate, jira_project_key)
             // -srvm
-            publishers.setSRVMScript(delegate, sh_python)
+            publishers.setSRVMScript(delegate)
             // -reports
             //publishers.setPublishHtml(delegate, "Screenshots", "${report_path}/screenshots.html")
             //publishers.setArchiveJunit(delegate, "${report_path}/report.xml")

@@ -87,7 +87,7 @@ class Publishers
 		}
     }
 
-    void setSRVMScript(def context, sh_python)
+    void setSRVMScript(def context)
     {
     	context.publishers
     	{
@@ -95,7 +95,12 @@ class Publishers
 	        {
 				steps 
 				{
-					shell(sh_python)
+					shell('''\
+						git submodule add http://stash.tutk.com:7990/scm/abs/srvm.git srvm
+						git submodule update srvm
+						
+						python srvm/srvm.py
+						''')
 				}
 				onlyIfBuildSucceeds(true)
 	        }
