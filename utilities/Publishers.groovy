@@ -99,7 +99,10 @@ class Publishers
 	        {
 				steps 
 				{
-					python(python_script)
+					python
+					{
+						command(python_script)
+					}
 				}
 				onlyIfBuildSucceeds(true)
 	        }
