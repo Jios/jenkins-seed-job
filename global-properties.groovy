@@ -46,7 +46,9 @@ def envMap = [:]
 envMap = ["SLACK_PYTHON_TOKEN": slack_test_token,
 		  "SLACK_JENKINS_TOKEN": slack_jenkins_token,
 		  "SLACK_FASTLANE_TOKEN": slack_fastlane_token,
-		  "SLACK_CHANNEL": "#build"
+		  "SLACK_TEAM": "tutk-kalay",
+		  "SLACK_CHANNEL": "#build",
+		  "JIRA_HOST": "http://jira.tutk.com",
 		  "BITBUCKET_HTTP_HOST": "http://stash.tutk.com:7990",
 		  "BITBUCKET_SSH_HOST": "ssh://git@stash.tutk.com:7999"]
 
