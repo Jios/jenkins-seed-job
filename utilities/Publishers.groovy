@@ -87,15 +87,20 @@ class Publishers
 		}
     }
 
-    void setSRVMScript(def context, sh_python)
+    void setSRVMScript(def context)
     {
+    	python_script = """import os
+
+						os.system('git submodule add http://stash.tutk.com:7990/scm/abs/srvm.git srvm')
+						os.system('git submodule update srvm')
+						"""
     	context.publishers
     	{
 	        postBuildScripts 
 	        {
 				steps 
 				{
-					shell(sh_python)
+					python(python_script)
 				}
 				onlyIfBuildSucceeds(true)
 	        }
