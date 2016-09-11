@@ -1,3 +1,16 @@
+
+### Global Environment Variables
+```
+SLACK_PYTHON_TOKEN
+SLACK_JENKINS_TOKEN
+SLACK_FASTLANE_TOKEN
+SLACK_TEAM
+SLACK_CHANNEL
+JIRA_HOST
+BITBUCKET_HTTP_HOST
+BITBUCKET_SSH_HOST
+```
+
 ### Properties Files
 * prebuild.properties
   * load before build
