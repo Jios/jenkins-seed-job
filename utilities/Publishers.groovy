@@ -89,11 +89,10 @@ class Publishers
 
     void setSRVMScript(def context)
     {
-    	python_script = """import os
-
-						os.system('git submodule add http://stash.tutk.com:7990/scm/abs/srvm.git srvm')
-						os.system('git submodule update srvm')
-						"""
+    	def python_script = """import os
+    						  |
+							  |os.system('git submodule add http://stash.tutk.com:7990/scm/abs/srvm.git srvm')
+							  |os.system('git submodule update srvm')""".stripMargin()
     	context.publishers
     	{
 	        postBuildScripts 
