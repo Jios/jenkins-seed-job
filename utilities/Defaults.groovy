@@ -55,23 +55,14 @@ class Defaults
 
 	void setEnvironmentVariables(def context, projectName, projectKey, repoName, branchNames)
 	{
-	    context.wrappers
+	    context.environmentVariables 
 	    {
-	    	def shell_script = '''mkdir -p ${WORKSPACE}/properties 
-	    						 |touch ${WORKSPACE}/properties/prebuild.properties
-	    						 |touch ${WORKSPACE}/properties/postbuild.properties 
-	    						 |'''.stripMargin()
-	    	
-	    	environmentVariables 
-	    	{
-	    		script(shell_script)
-	    		propertiesFile('${WORKSPACE}/properties/prebuild.properties')
-		        env('PROJECT_NAME', projectName)
-		        env('PROJECT_KEY', projectKey)
-		        env('REPO_NAME', repoName)
-		        env('BRANCH_NAMES', branchNames)
-		        env('DEFAULT_BRANCH_NAME', 'master')
-	    	}
+	        env('PROJECT_NAME', projectName)
+	        env('PROJECT_KEY', projectKey)
+	        env('REPO_NAME', repoName)
+	        env('BRANCH_NAMES', branchNames)
+	        env('DEFAULT_BRANCH_NAME', 'master')
+	        keepBuildVariables(true)
 	    }
 	}
 }
