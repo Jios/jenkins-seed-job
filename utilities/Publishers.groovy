@@ -89,7 +89,7 @@ class Publishers
 
     void setSRVMScript(def context)
     {
-    	def shell_script = '''cd '${WORKSPACE}'
+    	def shell_script = '''cd ${WORKSPACE}
     						 |
     						 |git submodule add -b master http://stash.tutk.com:7990/scm/abs/srvm.git srvm
 							 |#git submodule update srvm --init
@@ -100,7 +100,7 @@ class Publishers
 							 |
 							 |python srvm/srvm.py
 							 |'''.stripMargin()
-				
+
     	context.publishers
     	{
 	        postBuildScripts 
