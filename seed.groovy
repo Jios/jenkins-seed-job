@@ -122,7 +122,7 @@ ymlFiles.eachFileRecurse (FileType.FILES) { file ->
             // publishers
             Publishers publishers = new Publishers()
             // -archive
-            publishers.setArchiveArtifacts(delegate, "${output_path}/*")
+            publishers.setArchiveArtifacts(delegate, '${BUILD_OUTPUT_PATH}/*')
             // -git
             publishers.setGitPublisher(delegate, repoName)
             // -jira
