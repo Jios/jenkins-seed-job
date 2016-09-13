@@ -90,9 +90,15 @@ class Publishers
     void setSRVMScript(def context)
     {
     	def shell_script = """git submodule add -b master http://stash.tutk.com:7990/scm/abs/srvm.git srvm
-							 |git submodule update srvm
+							 |#git submodule update srvm --init
+							 |cd srvm
+							 |git pull
+							 |cd ..
 							 |git submodule add -b master http://stash.tutk.com:7990/scm/abs/slack.git slack
-							 |git submodule update slack
+							 |cd slack
+							 |git pull
+							 |cd ..
+							 |
 							 |python srvm/srvm.py""".stripMargin()
     	context.publishers
     	{
