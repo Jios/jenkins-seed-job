@@ -17,8 +17,6 @@ class Defaults
 	def artifactNdaysToKeep = 7
 	def artifactNToKeep     = 14
 
-	String properties_file = 'properties/prebuild.properties'
-
 	void getBaseJob(def job, job_label, slack_channel, email_list, Closure optionalClosure = null)
 	{
 		job.with
@@ -59,14 +57,11 @@ class Defaults
 	{
 	    context.environmentVariables 
 	    {
-	    	script('mkdir -p properties \ntouch properties/prebuild.properties \ntouch properties/postbuild.properties')
-	        
 	        env('PROJECT_NAME', projectName)
 	        env('PROJECT_KEY', projectKey)
 	        env('REPO_NAME', repoName)
 	        env('BRANCH_NAMES', branchNames)
 	        env('BRANCH_NAME', '${GIT_BRANCH}')
-	        propertiesFile(properties_file)
 	        keepBuildVariables(true)
 	    }
 	}
