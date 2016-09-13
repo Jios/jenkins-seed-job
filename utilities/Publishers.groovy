@@ -93,10 +93,10 @@ class Publishers
     						 |
     						 |git submodule add -b master http://stash.tutk.com:7990/scm/abs/srvm.git srvm
 							 |#git submodule update srvm --init
-							 |cd srvm && git pull && cd ..
+							 |cd srvm && git reset --hard && git pull && cd ..
 							 |
 							 |git submodule add -b master http://stash.tutk.com:7990/scm/abs/slack.git slack
-							 |cd slack && git pull && cd ..
+							 |cd slack && git reset --hard && git pull && cd ..
 							 |
 							 |python srvm/srvm.py
 							 |'''.stripMargin()
