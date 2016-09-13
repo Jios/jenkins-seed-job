@@ -115,7 +115,7 @@ class Publishers
 		}
     }
 
-    void setSlackNotifier(def context, slack_channel)
+    void setSlackNotifier(def context)
     {
     	context.publishers
     	{
@@ -124,7 +124,7 @@ class Publishers
 				teamDomain('')
 				authToken('')
 				buildServerUrl('')
-				room(slack_channel)
+				room('{SLACK_CHANNEL}')
 				startNotification(true)
 				notifySuccess(true)
 				notifyAborted(true)

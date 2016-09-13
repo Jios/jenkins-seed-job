@@ -17,7 +17,7 @@ class Defaults
 	def artifactNdaysToKeep = 7
 	def artifactNToKeep     = 14
 
-	void getBaseJob(def job, job_label, slack_channel, email_list, Closure optionalClosure = null)
+	void getBaseJob(def job, job_label, email_list, Closure optionalClosure = null)
 	{
 		job.with
 		{
@@ -42,7 +42,7 @@ class Defaults
 	        Publishers publishers = new Publishers()
 	        publishers.setJiraIssueUpdater(it)
 	        publishers.setMailer(it, email_list)
-	        publishers.setSlackNotifier(it, slack_channel)
+	        publishers.setSlackNotifier(it)
 		}
 
 		if(optionalClosure) 
@@ -61,7 +61,7 @@ class Defaults
 	        env('PROJECT_KEY', projectKey)
 	        env('REPO_NAME', repoName)
 	        env('BRANCH_NAMES', branchNames)
-	        env('BRANCH_NAME', '${GIT_BRANCH}')
+	        env('DEFAULT_BRANCH_NAME', 'master')
 	        keepBuildVariables(true)
 	    }
 	}

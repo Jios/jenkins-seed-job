@@ -21,11 +21,6 @@ def sh_python    = 'python srvm/srvm.py'
 def sh_build     = 'bash build.sh'
 
 /*
- *  slack info
- */ 
-def slack_channel = '#testing'
-
-/*
  *  jira
  */ 
 def jira_release_notes   = ''
@@ -97,7 +92,7 @@ ymlFiles.eachFileRecurse (FileType.FILES) { file ->
         def defaults  = new Defaults()
         def job_label = repoObject['job_label']
 
-        defaults.getBaseJob(newJob, job_label, slack_channel, email_list) 
+        defaults.getBaseJob(newJob, job_label, email_list) 
         {
             def scm_schedule = repoObject['scm_schedule']
 
