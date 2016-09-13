@@ -55,14 +55,17 @@ class Defaults
 
 	void setEnvironmentVariables(def context, projectName, projectKey, repoName, branchNames)
 	{
-	    context.environmentVariables 
+	    context.triggers
 	    {
-	        env('PROJECT_NAME', projectName)
-	        env('PROJECT_KEY', projectKey)
-	        env('REPO_NAME', repoName)
-	        env('BRANCH_NAMES', branchNames)
-	        env('DEFAULT_BRANCH_NAME', 'master')
-	        keepBuildVariables(true)
+	    	environmentVariables 
+	    	{
+		        env('PROJECT_NAME', projectName)
+		        env('PROJECT_KEY', projectKey)
+		        env('REPO_NAME', repoName)
+		        env('BRANCH_NAMES', branchNames)
+		        env('DEFAULT_BRANCH_NAME', 'master')
+		        keepBuildVariables(true)
+	    	}
 	    }
 	}
 }
