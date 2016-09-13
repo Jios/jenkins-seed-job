@@ -55,7 +55,7 @@ class Defaults
 
 	void setEnvironmentVariables(def context, projectName, projectKey, repoName, branchNames)
 	{
-	    context.triggers
+	    context.wrappers
 	    {
 	    	environmentVariables 
 	    	{
