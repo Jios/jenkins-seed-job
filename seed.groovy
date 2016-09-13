@@ -17,7 +17,6 @@ import groovy.io.FileType
 /*
  *  bash commands
  */ 
-def sh_python    = 'python srvm/srvm.py'
 def sh_build     = 'bash build.sh'
 
 /*
