@@ -39,6 +39,8 @@ class SCM
 
 				extensions
 				{
+					cleanBeforeCheckout()
+					
 					submoduleOptions 
 					{
 
