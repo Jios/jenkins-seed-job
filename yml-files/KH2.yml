@@ -18,11 +18,11 @@ repos:
     job_label: 'android'
     scm_schedule: '@daily'
     envs:
-      - SRVM_CUSTOMER_IDS: 422
-        SRVM_RELEASE_FOR: PM
-        SRVM_RELEASE_BY: gore_chiu
-        SRVM_PRODUCT_CATALOG: Kalay Home
-        BUILD_PLATFORM: android
+      SRVM_CUSTOMER_IDS: 422
+      SRVM_RELEASE_FOR: PM
+      SRVM_RELEASE_BY: gore_chiu
+      SRVM_PRODUCT_CATALOG: Kalay Home
+      BUILD_PLATFORM: android
     email_list: 
       - howard_chu@tutk.com
       - chain_chen@tutk.com
