@@ -8,6 +8,7 @@ branchNames:
   - '*/master'
   - '*/develop'
   - '*/release'
+  - '*/release/*'
   - '*/feature/*'
   - '*/hotfix/*'
   - '*/bugfix/*'
@@ -16,6 +17,12 @@ repos:
   - repo: smarthome-baseapp
     job_label: 'ios'
     scm_schedule: '@daily'
+    envs:
+      - SRVM_CUSTOMER_IDS: 422
+        SRVM_RELEASE_FOR: PM
+        SRVM_RELEASE_BY: gore_chiu
+        SRVM_PRODUCT_CATALOG: Kalay Home
+        BUILD_PLATFORM: ios
     email_list: 
       - jian_li@tutk.com
       - vita_lin@tutk.com
