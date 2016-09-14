@@ -95,7 +95,22 @@ ymlFiles.eachFileRecurse (FileType.FILES) { file ->
         {
             def scm_schedule = repoObject['scm_schedule']
 
-            defaults.setEnvironmentVariables(delegate, projectName, projectKey, repoName, branchNames)
+            envs = repoObject['envs']
+            environmentVariables 
+            {
+                env('PROJECT_NAME', projectName)
+                env('PROJECT_KEY', projectKey)
+                env('REPO_NAME', repoName)
+                env('BRANCH_NAMES', branchNames)
+                env('SRVM_CUSTOMER_IDS', envs['SRVM_CUSTOMER_IDS'])
+                env('SRVM_RELEASE_FOR', envs['SRVM_RELEASE_FOR'])
+                env('SRVM_RELEASE_BY', envs['SRVM_RELEASE_BY'])
+                env('SRVM_PRODUCT_CATALOG', envs['SRVM_PRODUCT_CATALOG'])
+                env('BUILD_PLATFORM', envs['BUILD_PLATFORM'])
+
+                keepBuildVariables(true)
+            }
+            //defaults.setEnvironmentVariables(delegate, projectName, projectKey, repoName, branchNames)
 
 
             // wrappers
