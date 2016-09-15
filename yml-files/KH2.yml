@@ -16,7 +16,7 @@ branchNames:
 repos:
   - repo: Android_SourceCode
     job_label: android
-    scm_schedule: @daily
+    scm_schedule: '@daily'
     build_command: fastlane android build
     envs:
       SRVM_CUSTOMER_IDS: 422

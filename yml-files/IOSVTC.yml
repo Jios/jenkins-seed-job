@@ -16,7 +16,7 @@ branchNames:
 repos:
   - repo: smarthome-baseapp
     job_label: ios
-    scm_schedule: @daily
+    scm_schedule: '@daily'
     build_command: fastlane ios build
     envs:
       SRVM_CUSTOMER_IDS: 422
