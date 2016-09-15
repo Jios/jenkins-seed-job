@@ -25,7 +25,6 @@ def jira_release_filter = '(Released, Closed)'
 /*
  *  directories
  */ 
-def output_path = 'output'
 def report_path = "reports"
 
 /*
@@ -102,6 +101,7 @@ ymlFiles.eachFileRecurse (FileType.FILES) { file ->
                 env('SRVM_RELEASE_BY', envs['SRVM_RELEASE_BY'])
                 env('SRVM_PRODUCT_CATALOG', envs['SRVM_PRODUCT_CATALOG'])
                 env('BUILD_PLATFORM', envs['BUILD_PLATFORM'])
+                env('BUILD_OUTPUT_PATH', envs['BUILD_OUTPUT_PATH'])
 
                 keepBuildVariables(true)
             }
