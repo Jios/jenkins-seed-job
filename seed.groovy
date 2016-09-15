@@ -15,11 +15,6 @@ import groovy.io.FileType
 
 
 /*
- *  bash commands
- */ 
-def sh_build     = 'bash build.sh'
-
-/*
  *  jira
  */ 
 def jira_release_notes   = ''
@@ -125,7 +120,7 @@ ymlFiles.eachFileRecurse (FileType.FILES) { file ->
             
             // build steps
             Steps steps = new Steps()
-            steps.setBuildScript(delegate, sh_build)
+            steps.setBuildScript(delegate, repoObject['build_command'])
             steps.setEnvInjectBuilder(delegate)
 
             // publishers
