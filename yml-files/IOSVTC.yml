@@ -1,6 +1,5 @@
 ---
-host_http: http://stash.tutk.com:7990
-host_ssh: ssh://git@stash.tutk.com:7999
+
 project_key: IOSVTC
 project_name: iOS_Vtech
 
