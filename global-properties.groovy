@@ -101,6 +101,7 @@ for (slave in slaves)
 
 
 /// evn.properties
+/*
 def resolver = build.buildVariableResolver
 def workspace = resolver.resolve("WORKSPACE")
 
@@ -115,6 +116,6 @@ map.each{ var_name, value ->
 }
 
 props.store(propsFile.newWriter(), null)
-
+*/
 
 
