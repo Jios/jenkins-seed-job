@@ -102,7 +102,7 @@ for (slave in slaves)
 
 /// evn.properties
 Properties props = new Properties()
-File propsFile = new File("${WORKSPACE}/evn.properties")
+File propsFile = new File("evn.properties")
 props.load(propsFile.newDataInputStream())
 
 
