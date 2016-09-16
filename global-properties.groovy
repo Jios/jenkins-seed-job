@@ -99,3 +99,19 @@ for (slave in slaves)
     slave.save()
 }
 
+
+/// evn.properties
+Properties props = new Properties()
+File propsFile = new File("${WORKSPACE}/evn.properties")
+props.load(propsFile.newDataInputStream())
+
+
+map.each{ var_name, value -> 
+
+	props.setProperty(var_name, value)
+}
+
+props.store(propsFile.newWriter(), null)
+
+
+
