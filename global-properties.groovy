@@ -99,23 +99,3 @@ for (slave in slaves)
     slave.save()
 }
 
-
-/// evn.properties
-/*
-def resolver = build.buildVariableResolver
-def workspace = resolver.resolve("WORKSPACE")
-
-Properties props = new Properties()
-File propsFile = new File("$workspace/evn.properties")
-props.load(propsFile.newDataInputStream())
-
-
-map.each{ var_name, value -> 
-
-	props.setProperty(var_name, value)
-}
-
-props.store(propsFile.newWriter(), null)
-*/
-
-
