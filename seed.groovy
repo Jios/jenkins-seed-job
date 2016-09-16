@@ -68,8 +68,8 @@ ymlFiles.eachFileRecurse (FileType.FILES) { file ->
         description("$projectName project")
     }
 
-    def host_http   = yaml['host_http']
-    def host_ssh    = yaml['host_ssh']
+    def host_http   = yaml.host_http ? yaml.host_http : "${STASH_HTTP_HOST}"
+    def host_ssh    = yaml.host_ssh  ? yaml.host_ssh  : "${STASH_SSH_HOST}" 
     def branchNames = yaml['branchNames']
     def repoObjects = yaml['repos']
 
@@ -87,7 +87,7 @@ ymlFiles.eachFileRecurse (FileType.FILES) { file ->
 
         defaults.getBaseJob(newJob, job_label, email_list) 
         {
-            def scm_schedule = repoObject['scm_schedule']
+            def scm_schedule = repoObject.scm_schedule ? repoObject.scm_schedule : "${SCM_SCHEDULE}"
 
             envs = repoObject['envs']
             environmentVariables 
