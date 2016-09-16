@@ -58,8 +58,8 @@ ymlFiles.eachFileRecurse (FileType.FILES) { file ->
 
     def yaml = getYaml(file)
 
-    def projectKey  = yaml['project_key']
-    def projectName = yaml['project_name']
+    def projectKey  = yaml.project_key
+    def projectName = yaml.project_name
 
     // folder
     folder(projectName)
@@ -70,38 +70,38 @@ ymlFiles.eachFileRecurse (FileType.FILES) { file ->
 
     def host_http   = yaml.host_http ? yaml.host_http : "${STASH_HTTP_HOST}"
     def host_ssh    = yaml.host_ssh  ? yaml.host_ssh  : "${STASH_SSH_HOST}" 
-    def branchNames = yaml['branchNames']
-    def repoObjects = yaml['repos']
+    def branchNames = yaml.branchNames
+    def repoObjects = yaml.repos
 
     // loop through repositories
     repoObjects.each { repoObject ->
       
-        def email_list = repoObject['email_list'].join(',')
-        def repoName   = repoObject['repo'] 
+        def email_list = repoObject.email_list.join(',')
+        def repoName   = repoObject.repo 
         def jobName    = repoName
         def newJob     = job("$projectName/${jobName}")
         
         // base job
         def defaults  = new Defaults()
-        def job_label = repoObject['job_label']
+        def job_label = repoObject.job_label
 
         defaults.getBaseJob(newJob, job_label, email_list) 
         {
             def scm_schedule = repoObject.scm_schedule ? repoObject.scm_schedule : "${SCM_SCHEDULE}"
 
-            envs = repoObject['envs']
+            envs = repoObject.envs
             environmentVariables 
             {
                 env('PROJECT_NAME', projectName)
                 env('PROJECT_KEY', projectKey)
                 env('REPO_NAME', repoName)
                 env('BRANCH_NAMES', branchNames)
-                env('SRVM_CUSTOMER_IDS', envs['SRVM_CUSTOMER_IDS'])
-                env('SRVM_RELEASE_FOR', envs['SRVM_RELEASE_FOR'])
-                env('SRVM_RELEASE_BY', envs['SRVM_RELEASE_BY'])
-                env('SRVM_PRODUCT_CATALOG', envs['SRVM_PRODUCT_CATALOG'])
-                env('BUILD_PLATFORM', envs['BUILD_PLATFORM'])
-                env('BUILD_OUTPUT_PATH', envs['BUILD_OUTPUT_PATH'])
+                env('SRVM_CUSTOMER_IDS', envs.SRVM_CUSTOMER_IDS)
+                env('SRVM_RELEASE_FOR', envs.SRVM_RELEASE_FOR)
+                env('SRVM_RELEASE_BY', envs.SRVM_RELEASE_BY)
+                env('SRVM_PRODUCT_CATALOG', envs.SRVM_PRODUCT_CATALOG)
+                env('BUILD_PLATFORM', envs.BUILD_PLATFORM)
+                env('BUILD_OUTPUT_PATH', envs.BUILD_OUTPUT_PATH)
 
                 keepBuildVariables(true)
             }
@@ -120,7 +120,7 @@ ymlFiles.eachFileRecurse (FileType.FILES) { file ->
             
             // build steps
             Steps steps = new Steps()
-            steps.setBuildScript(delegate, repoObject['build_command'])
+            steps.setBuildScript(delegate, repoObject.build_command)
             steps.setEnvInjectBuilder(delegate)
 
             // publishers
