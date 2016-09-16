@@ -23,11 +23,6 @@ def jira_release_version = '1.0.0'
 def jira_release_filter = '(Released, Closed)'
 
 /*
- *  directories
- */ 
-def report_path = "reports"
-
-/*
  *  credentials
  */
 def credentialID = 'abs_ssh'
@@ -135,8 +130,8 @@ ymlFiles.eachFileRecurse (FileType.FILES) { file ->
             // -srvm
             publishers.setSRVMScript(delegate)
             // -reports
-            //publishers.setPublishHtml(delegate, "Screenshots", "${report_path}/screenshots.html")
-            //publishers.setArchiveJunit(delegate, "${report_path}/report.xml")
+            //publishers.setPublishHtml(delegate, "Screenshots", '${REPORT_PATH}/screenshots.html')
+            //publishers.setArchiveJunit(delegate, '${REPORT_PATH}/report.xml')
         }
     }
 }
