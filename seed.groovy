@@ -63,9 +63,9 @@ ymlFiles.eachFileRecurse (FileType.FILES) { file ->
         description("$projectName project")
     }
 
-    def host_http   = yaml.host_http ? yaml.host_http : "${STASH_HTTP_HOST}"
-    def host_ssh    = yaml.host_ssh  ? yaml.host_ssh  : "${STASH_SSH_HOST}" 
-    def branchNames = yaml.branchNames
+    def host_http   = yaml.host_http   ? yaml.host_http : "${STASH_HTTP_HOST}"
+    def host_ssh    = yaml.host_ssh    ? yaml.host_ssh  : "${STASH_SSH_HOST}" 
+    def branchNames = yaml.branchNames ? yaml.branchNames : Eval.me("${BRANCH_NAMES}")
     def repoObjects = yaml.repos
 
     // loop through repositories
