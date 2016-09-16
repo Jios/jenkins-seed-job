@@ -101,8 +101,11 @@ for (slave in slaves)
 
 
 /// evn.properties
+def resolver = build.buildVariableResolver
+def workspace = resolver.resolve("WORKSPACE")
+
 Properties props = new Properties()
-File propsFile = new File("evn.properties")
+File propsFile = new File("$workspace/evn.properties")
 props.load(propsFile.newDataInputStream())
 
 
