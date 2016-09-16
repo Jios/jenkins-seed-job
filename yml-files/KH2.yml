@@ -1,22 +1,11 @@
 ---
-host_http: http://stash.tutk.com:7990
-host_ssh: ssh://git@stash.tutk.com:7999
+
 project_key: KH2
 project_name: KalayHome2.0
-
-branchNames: 
-  - '*/master'
-  - '*/develop'
-  - '*/release'
-  - '*/release/*'
-  - '*/feature/*'
-  - '*/hotfix/*'
-  - '*/bugfix/*'
 
 repos:
   - repo: Android_SourceCode
     job_label: android
-    scm_schedule: '@daily'
     build_command: fastlane android build
     envs:
       SRVM_CUSTOMER_IDS: 422
@@ -25,6 +14,7 @@ repos:
       SRVM_PRODUCT_CATALOG: Kalay Home
       BUILD_PLATFORM: android
       BUILD_OUTPUT_PATH: output
+      REPORT_PATH: reports
     email_list: 
       - howard_chu@tutk.com
       - chain_chen@tutk.com

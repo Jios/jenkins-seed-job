@@ -3,19 +3,10 @@
 project_key: IOSVTC
 project_name: iOS_Vtech
 
-branchNames: 
-  - '*/master'
-  - '*/develop'
-  - '*/release'
-  - '*/release/*'
-  - '*/feature/*'
-  - '*/hotfix/*'
-  - '*/bugfix/*'
 
 repos:
   - repo: smarthome-baseapp
     job_label: ios
-    scm_schedule: '@daily'
     build_command: fastlane ios build
     envs:
       SRVM_CUSTOMER_IDS: 422
@@ -24,6 +15,7 @@ repos:
       SRVM_PRODUCT_CATALOG: Kalay Home
       BUILD_PLATFORM: ios
       BUILD_OUTPUT_PATH: output
+      REPORT_PATH: reports
     email_list: 
       - jian_li@tutk.com
       - vita_lin@tutk.com
