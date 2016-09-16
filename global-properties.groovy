@@ -48,6 +48,8 @@ def git_ssh_host  = "ssh://git@stash.tutk.com:7999"
 def crashlytics_api_key      = "a903f72a6ffdd06539302df50101d05b48d830ea"
 def crashlytics_build_secret = "039b2c50ea29ef03f71f5cb93b598bfdfe4a19a23054f66cdddd13275803e599"
 
+def branch_names = "['*/master','*/develop','*/release','*/release/*','*/feature/*','*/hotfix/*','*/bugfix/*']"
+
 // env variable map
 def envMap = [:]
 envMap = ["SLACK_PYTHON_TOKEN": slack_test_token,
@@ -61,6 +63,7 @@ envMap = ["SLACK_PYTHON_TOKEN": slack_test_token,
 		  "STASH_SSH_HOST": git_ssh_host,
 		  "BITBUCKET_HTTP_HOST": git_http_host,
 		  "BITBUCKET_SSH_HOST": git_ssh_host,
+		  "BRANCH_NAMES": branch_names,
 		  "CRASHLYTICS_API_TOKEN": crashlytics_api_key,
 		  "CRASHLYTICS_BUILD_SECRET": crashlytics_build_secret,
 		  "SCM_SCHEDULE": "@daily"]
