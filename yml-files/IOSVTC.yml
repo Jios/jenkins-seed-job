@@ -5,10 +5,10 @@ project_name: iOS_Vtech
 
 
 repos:
-  - repo: smarthome-baseapp
+  - name: smarthome-baseapp
     job_label: ios
     build_command: fastlane ios build
-    envs:
+    environment:
       SRVM_CUSTOMER_IDS: 422
       SRVM_RELEASE_FOR: PM
       SRVM_RELEASE_BY: jian_li
