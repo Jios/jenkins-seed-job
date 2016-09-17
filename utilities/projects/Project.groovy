@@ -23,10 +23,16 @@ class Project
 	}
 
 	// Getter
-	String getHost() { return host }
-	String getProject_key() { return project_key }
+	String getKey() { return key }
 
 	// Setter
-	void setHost(String host) { this.host = host }
-	void setProject_key(String project_key) { this.project_key = project_key }
+	void setHost_http(String host) 
+	{ 
+		this.host_http = host_http ? host_http : host
+	}
+
+	void setHost_ssh(String host) 
+	{ 
+		this.host_ssh= host_ssh? host_ssh: host
+	}
 }

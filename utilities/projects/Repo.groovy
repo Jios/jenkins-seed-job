@@ -22,4 +22,24 @@ class Repo
 	{
 		
 	}
+
+
+	// Getter
+	String getEmail_list() 
+	{ 
+		def emails = email_list.join(',')
+		return emails
+	}
+
+
+	// Setter
+	void setBranchNames(String branches) 
+	{ 
+		this.branchNames = branchNames ? branchNames : Eval.me(branches)
+	}
+
+	void setSchedule(String scm_schedule)
+	{
+		this.schedule = schedule ? schedule : scm_schedule
+	}
 }
