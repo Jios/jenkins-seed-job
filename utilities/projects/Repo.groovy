@@ -6,10 +6,10 @@ import utilities.projects.Environment
 class Repo
 {
 	public String name
-	public String job_label
-	public String scm_schedule
+	public String label	// slave label
+	public String schedule = null
 	public String build_command
-	public List<String> branchNames
+	public List<String> branchNames = null
 	public List<String> email_list
 	public Environment environment
 

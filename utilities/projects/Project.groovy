@@ -7,8 +7,8 @@ class Project
 {
 	public String host_http
 	public String host_ssh
-	public String project_key
-	public String project_name
+	public String key
+	public String name
 	public List<Repo> repos
 
 	// constructor
