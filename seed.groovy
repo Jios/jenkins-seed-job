@@ -39,7 +39,7 @@ def credentialID = 'abs_ssh'
 //////////////////////////////////////////////////////////////////////
 
 
-def getYaml(file)
+def getFileStreamFromFile(file)
 {
     def components = file.path.split('/')
     def dir        = components[-2] + '/' + components[-1]
@@ -48,9 +48,26 @@ def getYaml(file)
     def fileName   = dir
     def fileStream = getClass().getClassLoader().getResourceAsStream(fileName)
 
-    def yaml = new Yaml().load(fileStream);
+    return fileStream
+}
 
-    return yaml
+def parseYamlFileWithStream(fileStream)
+{
+    Constructor     yamlConstr = new YamlConstructor(Project.class);
+    TypeDescription typeDesc   = new TypeDescription(Project.class);
+    
+    typeDesc.putListPropertyType("repos", Repo.class)
+    typeDesc.putListPropertyType("environment", Environment.class)
+
+    yamlConstr.addTypeDescription(typeDesc)
+
+    // new Yaml instance with YamlConstructor
+    Yaml yaml = new Yaml(yamlConstr);
+    
+    // parse yaml file to class
+    Project project = (Project)yaml.load(fileStream);
+    
+    return project
 }
 
 
@@ -59,69 +76,62 @@ def ymlFiles = new File("${WORKSPACE}/yml-files/")
 
 ymlFiles.eachFileRecurse (FileType.FILES) { file ->
 
+    // process yml file only
     if(file.name.endsWith('.yml')) 
     {
-        def yaml = getYaml(file)
+        /*
+         *
+         *  Project
+         *
+         */
 
-        def projectKey  = yaml.project_key
-        def projectName = yaml.project_name
+        def fileStream    = getFileStreamFromFile(file)
+        def projectObject = parseYamlFileWithStream(fileStream)
 
         // folder
-        folder(projectName)
+        folder(projectObject.name)
         {
-            displayName(projectName)
-            description("$projectName project")
+            displayName(projectObject.name)
+            description("$projectObject.name project")
         }
 
-        def host_http   = yaml.host_http   ? yaml.host_http : "${STASH_HTTP_HOST}"
-        def host_ssh    = yaml.host_ssh    ? yaml.host_ssh  : "${STASH_SSH_HOST}" 
-        def branchNames = yaml.branchNames ? yaml.branchNames : Eval.me("${BRANCH_NAMES}")
-        def repoObjects = yaml.repos
+        // set project
+        projectObject.setHost_http("${STASH_HTTP_HOST}")
+        projectObject.setHost_ssh("${STASH_SSH_HOST}")
 
-        // loop through repositories
-        repoObjects.each { repoObject ->
+
+        projectObject.repos.each { repoObject ->
           
-            def email_list = repoObject.email_list.join(',')
-            def repoName   = repoObject.repo 
-            def jobName    = repoName
-            def newJob     = job("$projectName/${jobName}")
+            /*
+             *
+             *  Repository
+             *
+             */
+
+            def newJob = job("$projectObject.name/${repoObject.name}")
             
+            // set repo
+            repoObject.setBranchNames("${BRANCH_NAMES}")
+            repoObject.setSchedule("${SCM_SCHEDULE}")
+            repoObject.setOutput_path('${BUILD_OUTPUT_PATH}')
+            repoObject.setReport_path('${REPORT_PATH}')
+
             // base job
             def defaults  = new Defaults()
-            def job_label = repoObject.job_label
 
-            defaults.getBaseJob(newJob, job_label, email_list) 
+            defaults.getBaseJob(newJob, repoObject) 
             {
-                def scm_schedule = repoObject.scm_schedule ? repoObject.scm_schedule : "${SCM_SCHEDULE}"
-
-                envs = repoObject.envs
-                environmentVariables 
-                {
-                    env('PROJECT_NAME', projectName)
-                    env('PROJECT_KEY', projectKey)
-                    env('REPO_NAME', repoName)
-                    env('BRANCH_NAMES', branchNames)
-                    env('SRVM_CUSTOMER_IDS', envs.SRVM_CUSTOMER_IDS)
-                    env('SRVM_RELEASE_FOR', envs.SRVM_RELEASE_FOR)
-                    env('SRVM_RELEASE_BY', envs.SRVM_RELEASE_BY)
-                    env('SRVM_PRODUCT_CATALOG', envs.SRVM_PRODUCT_CATALOG)
-                    env('BUILD_PLATFORM', envs.BUILD_PLATFORM)
-                    env('BUILD_OUTPUT_PATH', envs.BUILD_OUTPUT_PATH)
-
-                    keepBuildVariables(true)
-                }
-                //defaults.setEnvironmentVariables(delegate, projectName, projectKey, repoName, branchNames)
-
+                defaults.setEnvironmentVariables(delegate, projectObject, repoObject)
 
                 // wrappers
                 //Wrappers.setJiraRelease(delegate, jira_release_notes, jira_project_key, jira_release_version, jira_release_filter)
                 Wrappers.setSshAgent(delegate, credentialID)
 
                 // triggers
-                Triggers.setTriggers(delegate, scm_schedule)
+                Triggers.setTriggers(delegate, repoObject.schedule)
 
                 // scm: git
-                SCM.setSCM(delegate, host_http, host_ssh, projectKey, repoName, branchNames, credentialID)
+                SCM.setSCM(delegate, projectObject, repoObject, credentialID)
                 
                 // build steps
                 Steps steps = new Steps()
@@ -131,17 +141,17 @@ ymlFiles.eachFileRecurse (FileType.FILES) { file ->
                 // publishers
                 Publishers publishers = new Publishers()
                 // -archive
-                publishers.setArchiveArtifacts(delegate, '${BUILD_OUTPUT_PATH}/*')
+                publishers.setArchiveArtifacts(delegate, "$repoObject.output_path/*")
                 // -git
-                publishers.setGitPublisher(delegate, repoName)
+                publishers.setGitPublisher(delegate, repoObject.name)
                 // -jira
                 publishers.setJiraIssue(delegate)
                 //publishers.setJiraVersion(delegate, jira_project_key)
                 // -srvm
                 publishers.setSRVMScript(delegate)
                 // -reports
-                //publishers.setPublishHtml(delegate, "Screenshots", '${REPORT_PATH}/screenshots.html')
-                //publishers.setArchiveJunit(delegate, '${REPORT_PATH}/report.xml')
+                //publishers.setPublishHtml(delegate, "Screenshots", "$repoObject.report_path/screenshots.html")
+                //publishers.setArchiveJunit(delegate, "$repoObject.report_path/report.xml")
             }
         }
     }
