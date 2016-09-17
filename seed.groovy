@@ -119,10 +119,8 @@ ymlFiles.eachFileRecurse (FileType.FILES) { file ->
             // base job
             def defaults  = new Defaults()
 
-            defaults.getBaseJob(newJob, repoObject) 
+            defaults.setBaseJob(newJob, projectObject, repoObject) 
             {
-                defaults.setEnvironmentVariables(delegate, projectObject, repoObject)
-
                 // wrappers
                 //Wrappers.setJiraRelease(delegate, jira_release_notes, jira_project_key, jira_release_version, jira_release_filter)
                 Wrappers.setSshAgent(delegate, credentialID)
