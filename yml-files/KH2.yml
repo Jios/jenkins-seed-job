@@ -1,13 +1,15 @@
 ---
 
-project_key: KH2
-project_name: KalayHome2.0
+# project info
+key: KH2
+name: KalayHome2.0
 
+# repositories
 repos:
   - name: Android_SourceCode
-    job_label: android
+    label: android
     build_command: fastlane android build
-    environment:
+    environment:  # environment variables
       SRVM_CUSTOMER_IDS: 422
       SRVM_RELEASE_FOR: PM
       SRVM_RELEASE_BY: gore_chiu

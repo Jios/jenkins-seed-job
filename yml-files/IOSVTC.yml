@@ -1,12 +1,13 @@
 ---
 
-project_key: IOSVTC
-project_name: iOS_Vtech
+# project info
+key: IOSVTC
+name: iOS_Vtech
 
-
+# repositories
 repos:
   - name: smarthome-baseapp
-    job_label: ios
+    label: ios
     build_command: fastlane ios build
     environment:
       SRVM_CUSTOMER_IDS: 422
