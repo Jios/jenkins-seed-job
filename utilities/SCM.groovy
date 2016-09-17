@@ -15,7 +15,7 @@ package utilities
 
 class SCM
 {
-	static void setSCM(def context, host_http, host_ssh, projectKey, repoName, branchNames, credentialsID)
+	static void setSCM(def context, projectObject, repoObject, credentialsID)
 	{
 		context.scm 
 		{
@@ -23,18 +23,18 @@ class SCM
 			{
 				remote
 				{
-					name(repoName)
-					url("${host_ssh}/${projectKey}/${repoName}.git")
+					name(repoObject.name)
+					url("${projectObject.host_ssh}/${projectObject.key}/${repoObject.name}.git")
 					credentials(credentialsID)
 				}
 
-				branchNames.each { branchName ->
+				repoObject.branchNames.each { branchName ->
 					branch(branchName)
 				}
 
 				browser 
 				{
-					stash("${host_http}/projects/${projectKey}/repos/${repoName}")
+					stash("${projectObject.host_http}/projects/${projectObject.key}/repos/${repoObject.name}")
 				}
 
 				extensions
