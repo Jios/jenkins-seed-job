@@ -129,7 +129,10 @@ ymlFiles.eachFileRecurse (FileType.FILES) { file ->
             def newJob   = job(jobName)
             def defaults = new Defaults()
 
-            defaults.setBaseJob(newJob, projectObject, repoObject) 
+            new Defaults(
+                projectObject: projectObject,
+                repoObject: repoObject
+            ).build(this).with 
             {
                 steps{
                     // metaClass example: lib/src/main/groovy/echo.groovy

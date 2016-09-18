@@ -1,7 +1,15 @@
 package utilities
 
+import javaposse.jobdsl.dsl.DslFactory
+import javaposse.jobdsl.dsl.Job
+import javaposse.jobdsl.dsl.*
+
+
 class Defaults
 {
+	def projectObject
+	def repoObject
+
 	/*
 	 *  log rotator
 	 */
@@ -10,15 +18,19 @@ class Defaults
 	def artifactNdaysToKeep = 7
 	def artifactNToKeep     = 14
 
-	void setBaseJob(def job, projectObject, repoObject, Closure optionalClosure = null)
+	Job build(DslFactory factory) 
 	{
-		job.with
-		{
-			if (repoObject.label != "")
+		def name = "$projectObject.name/${repoObject.name}"
+
+        factory.job(name) 
+        {
+        	if (repoObject.label != "")
             {
                 // slave machnine label
                 label(repoObject.label)
             }
+
+            CommonUtils.addDefaults(delegate)
 
             environmentVariables 
 		    {
@@ -52,13 +64,7 @@ class Defaults
 	        publishers.setJiraIssueUpdater(it)
 	        publishers.setMailer(it, repoObject.getEmail_list())
 	        publishers.setSlackNotifier(it)
-		}
-
-		if(optionalClosure) 
-		{
-			optionalClosure.delegate = job
-			optionalClosure.run()
-		}
-	}
+        }
+    }
 
 }
