@@ -151,6 +151,9 @@ ymlFiles.eachFileRecurse (FileType.FILES) { file ->
                 //publishers.setPublishHtml(delegate, "Screenshots", "$repoObject.report_path/screenshots.html")
                 //publishers.setArchiveJunit(delegate, "$repoObject.report_path/report.xml")
             }
+
+            // schedule a job
+            queue(jobName)
         }
     }
 }
