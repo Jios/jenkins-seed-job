@@ -169,6 +169,28 @@ ymlFiles.eachFileRecurse (FileType.FILES) { file ->
 
             // schedule a job
             queue(jobName)
+
+            // list view
+            listView(projectObject.name) 
+            {
+                jobs
+                {
+                    name(jobName)
+                }
+
+                recurse(true)
+                
+                columns 
+                {
+                    status()
+                    weather()
+                    name()
+                    lastSuccess()
+                    lastFailure()
+                    lastDuration()
+                    buildButton()
+                }
+            }
         }
     }
 }
