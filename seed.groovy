@@ -34,14 +34,18 @@ def credentialID = 'abs_ssh'
 //////////////////////////////////////////////////////////////////////
 
 
-def getFileStreamFromFile(file)
+def getFilePath(file)
 {
     def components = file.path.split('/')
-    def dir        = components[-2] + '/' + components[-1]
+    // remove WORKSPACE path
+    def file_path  = components[-2] + '/' + components[-1]
 
-    // .yml file 
-    def fileName   = dir
-    def fileStream = getClass().getClassLoader().getResourceAsStream(fileName)
+    return file_path
+}
+
+def getFileStreamFromFilePath(file_path)
+{
+    def fileStream = getClass().getClassLoader().getResourceAsStream(file_path)
 
     return fileStream
 }
@@ -51,8 +55,9 @@ def parseYamlFileWithStream(fileStream)
     Constructor     yamlConstr = new YamlConstructor(Project.class);
     TypeDescription typeDesc   = new TypeDescription(Project.class);
     
-    typeDesc.putListPropertyType("repos", Repo.class)
+    typeDesc.putListPropertyType("repos",       Repo.class)
     typeDesc.putListPropertyType("environment", Environment.class)
+    typeDesc.putListPropertyType("jira",        Jira.class)
 
     yamlConstr.addTypeDescription(typeDesc)
 
@@ -90,7 +95,8 @@ ymlFiles.eachFileRecurse (FileType.FILES) { file ->
          *
          */
 
-        def fileStream    = getFileStreamFromFile(file)
+        def file_path     = getFilePath(file)
+        def fileStream    = getFileStreamFromFilePath(file_path)
         def projectObject = parseYamlFileWithStream(fileStream)
 
         // folder
