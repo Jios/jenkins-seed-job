@@ -33,6 +33,20 @@ class Repo
 		return emails
 	}
 
+	String getSshUrl(projectUrl)
+	{
+		def url = projectUrl + '/' + name + '.git'
+
+		return url
+	}
+
+	String getHttpUrl(projectUrl)
+	{
+		def url = projectUrl + '/repos/' + name
+
+		return url
+	}
+
 
 	// Setter
 	void setBranchNames(String branches) 
