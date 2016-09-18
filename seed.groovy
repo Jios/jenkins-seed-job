@@ -91,7 +91,7 @@ ymlFiles.eachFileRecurse (FileType.FILES) { file ->
     {
         /*
          *
-         *  Project
+         *  Project: stash/bitbucket project
          *
          */
 
@@ -110,17 +110,14 @@ ymlFiles.eachFileRecurse (FileType.FILES) { file ->
         projectObject.setHost_http("${STASH_HTTP_HOST}")
         projectObject.setHost_ssh("${STASH_SSH_HOST}")
 
-
         projectObject.repos.each { repoObject ->
           
             /*
              *
-             *  Repository
+             *  Repository: jenkins job
              *
              */
 
-            def newJob = job("$projectObject.name/${repoObject.name}")
-            
             // set repo
             repoObject.setBranchNames("${BRANCH_NAMES}")
             repoObject.setSchedule("${SCM_SCHEDULE}")
@@ -128,7 +125,9 @@ ymlFiles.eachFileRecurse (FileType.FILES) { file ->
             repoObject.setReport_path('${REPORT_PATH}')
 
             // base job
-            def defaults  = new Defaults()
+            def jobName  = "$projectObject.name/${repoObject.name}"
+            def newJob   = job(jobName)
+            def defaults = new Defaults()
 
             defaults.setBaseJob(newJob, projectObject, repoObject) 
             {
