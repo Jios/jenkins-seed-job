@@ -65,6 +65,16 @@ def parseYamlFileWithStream(fileStream)
     return project
 }
 
+def exportPropertiesFile(file_path)
+{
+    def properties = new Properties() 
+
+    streamFileFromWorkspace(file_path).withStream 
+    { 
+        InputStream it -> properties.load(it) 
+    }
+}
+
 
 // loop through projects
 def ymlFiles = new File("${WORKSPACE}/yml-files/")
