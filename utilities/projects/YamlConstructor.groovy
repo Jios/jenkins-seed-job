@@ -14,9 +14,10 @@ public class YamlConstructor extends Constructor
        {
            super( theRoot );
 
-           classMap.put( Project.class.getName(), Project.class );
-           classMap.put( Repo.class.getName(), Repo.class );
+           classMap.put( Project.class.getName(),     Project.class );
+           classMap.put( Repo.class.getName(),        Repo.class );
            classMap.put( Environment.class.getName(), Environment.class );
+           classMap.put( Jira.class.getName(),        Jira.class );
        }
 
        /*

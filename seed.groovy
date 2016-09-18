@@ -14,21 +14,15 @@ import utilities.projects.YamlConstructor
 import utilities.projects.Project
 import utilities.projects.Repo
 import utilities.projects.Environment
+import utilities.projects.Jira
 
 import org.yaml.snakeyaml.Yaml
 import groovy.io.FileType
 
 
+
 //////////////////////////////
 
-
-/*
- *  jira
- */ 
-def jira_release_notes   = ''
-def jira_release_version = '1.0.0'
-
-def jira_release_filter = '(Released, Closed)'
 
 /*
  *  credentials
