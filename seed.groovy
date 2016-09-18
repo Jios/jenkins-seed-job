@@ -19,6 +19,7 @@ import utilities.projects.Jira
 import org.yaml.snakeyaml.Yaml
 import groovy.io.FileType
 
+import lib.src.main.groovy.*
 
 
 //////////////////////////////
@@ -115,6 +116,11 @@ ymlFiles.eachFileRecurse (FileType.FILES) { file ->
 
             defaults.setBaseJob(newJob, projectObject, repoObject) 
             {
+                steps{
+                    // metaClass example: lib/src/main/groovy/echo.groovy
+                    //echo('test', 123123)
+                }
+
                 // wrappers
                 //Wrappers.setJiraRelease(delegate, jira_release_notes, jira_project_key, jira_release_version, jira_release_filter)
                 Wrappers.setSshAgent(delegate, credentialID)
