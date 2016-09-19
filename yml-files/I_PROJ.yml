@@ -1,0 +1,47 @@
+---
+
+# project info
+key: I_PROJ
+name: iOS_projects
+
+# repositories
+repos:
+  - name: amped_ipad
+    label: ios
+    build_command: fastlane ios build
+    environment:
+      SRVM_CUSTOMER_IDS: 448
+      SRVM_RELEASE_FOR: PM
+      SRVM_RELEASE_BY: chun_chen
+      SRVM_PRODUCT_CATALOG: vsaas
+      BUILD_PLATFORM: ios
+      BUILD_OUTPUT_PATH: output
+      REPORT_PATH: reports
+    email_list: 
+      - chun_chen@tutk.com
+  - name: amped
+    label: ios
+    build_command: fastlane ios build
+    environment:
+      SRVM_CUSTOMER_IDS: 448
+      SRVM_RELEASE_FOR: PM
+      SRVM_RELEASE_BY: chun_chen
+      SRVM_PRODUCT_CATALOG: vsaas
+      BUILD_PLATFORM: ios
+      BUILD_OUTPUT_PATH: output
+      REPORT_PATH: reports
+    email_list: 
+      - chun_chen@tutk.com
+  - name: kalay_doorphone_2.0
+    label: ios
+    build_command: fastlane ios build
+    environment:
+      SRVM_CUSTOMER_IDS: 504
+      SRVM_RELEASE_FOR: PM
+      SRVM_RELEASE_BY: joe_lo
+      SRVM_PRODUCT_CATALOG: vsaas
+      BUILD_PLATFORM: ios
+      BUILD_OUTPUT_PATH: output
+      REPORT_PATH: reports
+    email_list: 
+      - joe_lo@tutk.com
