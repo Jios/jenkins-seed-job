@@ -24,13 +24,13 @@ class Defaults
 
         factory.job(name) 
         {
+            CommonUtils.addDefaults(delegate)
+
         	if (repoObject.label != "")
             {
                 // slave machnine label
                 label(repoObject.label)
             }
-
-            CommonUtils.addDefaults(delegate)
 
             environmentVariables 
 		    {
@@ -47,17 +47,6 @@ class Defaults
 		        env('BUILD_PLATFORM',       envObject.BUILD_PLATFORM)
 		        env('BUILD_OUTPUT_PATH',    envObject.BUILD_OUTPUT_PATH)
 		    }
-
-			logRotator
-	        {
-	            daysToKeep(ndaysToKeep)
-	            numToKeep(nToKeep)
-	            artifactDaysToKeep(artifactNdaysToKeep)
-	            artifactNumToKeep (artifactNToKeep)
-	        }
-
-	        // wrappers
-	        Wrappers.setColorizeOutput(it)
 
 	        // publisher
 	        Publishers publishers = new Publishers()

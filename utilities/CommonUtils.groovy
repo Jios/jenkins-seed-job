@@ -13,6 +13,8 @@ class CommonUtils
     {
         context.with 
         {
+        	Triggers.setTriggers(delegate, '@daily')
+
             wrappers 
             {
                 colorizeOutput()
@@ -26,6 +28,9 @@ class CommonUtils
 	            artifactNumToKeep (14)
 	        }
             
+            // wrappers
+	        Wrappers.setColorizeOutput(it)
+
             publishers 
             {
                 allowBrokenBuildClaiming()
