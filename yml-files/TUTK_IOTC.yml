@@ -1,0 +1,26 @@
+---
+# project info
+key: TUTK_IOTC
+name: iotc
+
+# repositories
+repos:
+  - name: iotc
+    label: david
+    build_command: |
+    					cd Build/Linux
+    					./build.py x86 all
+    					cd ${WORKSPACE}
+    					mkdir output
+    					zip -r output/x86.zip Lib/Linux/x86
+    
+    environment:
+      SRVM_CUSTOMER_IDS: 504
+      SRVM_RELEASE_FOR: FAE
+      SRVM_RELEASE_BY: david_liu
+      SRVM_PRODUCT_CATALOG: IOTC New SOC Support
+      BUILD_PLATFORM: ??? Linux
+      BUILD_OUTPUT_PATH: output
+      REPORT_PATH: reports
+    email_list: 
+      - david_liu@tutk.com
