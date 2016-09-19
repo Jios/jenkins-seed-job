@@ -170,4 +170,12 @@ class Publishers
 			}
     	}
     }
+
+    void setBrokenBuildClaiming(def context)
+    {
+    	context.publishers
+    	{
+    		allowBrokenBuildClaiming()
+    	}
+    }
 }

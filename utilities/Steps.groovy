@@ -6,8 +6,7 @@ class Steps
 	{
 		String properties_file = '${WORKSPACE}/properties/prebuild.properties'
 		
-		def sh_script = '''rm -rf ${WORKSPACE}/properties 
-						  |mkdir -p ${WORKSPACE}/properties 
+		def sh_script = '''mkdir -p ${WORKSPACE}/properties 
 						  |touch ${WORKSPACE}/properties/prebuild.properties
 						  |touch ${WORKSPACE}/properties/postbuild.properties 
 						  |'''.stripMargin()

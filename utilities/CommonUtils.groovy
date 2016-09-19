@@ -9,15 +9,14 @@ class CommonUtils
      * Adds bare minimum defaults
      */
 
-    static void addDefaults(context) 
+    static void addDefaults(context, projectObject, repoObject) 
     {
         context.with 
         {
-        	Triggers.setTriggers(delegate, '@daily')
-
-            wrappers 
+        	if (repoObject.label != "")
             {
-                colorizeOutput()
+                // slave machnine label
+                label(repoObject.label)
             }
             
             logRotator
@@ -27,14 +26,34 @@ class CommonUtils
 	            artifactDaysToKeep(7)
 	            artifactNumToKeep (14)
 	        }
+
+            environmentVariables 
+		    {
+		        def envObject = repoObject.environment
+
+		        env('PROJECT_NAME',         projectObject.name)
+		        env('PROJECT_KEY',          projectObject.key)
+		        env('REPO_NAME',            repoObject.name)
+		        env('BRANCH_NAMES',         repoObject.branchNames)
+		        env('SRVM_CUSTOMER_IDS',    envObject.SRVM_CUSTOMER_IDS)
+		        env('SRVM_RELEASE_FOR',     envObject.SRVM_RELEASE_FOR)
+		        env('SRVM_RELEASE_BY',      envObject.SRVM_RELEASE_BY)
+		        env('SRVM_PRODUCT_CATALOG', envObject.SRVM_PRODUCT_CATALOG)
+		        env('BUILD_PLATFORM',       envObject.BUILD_PLATFORM)
+		        env('BUILD_OUTPUT_PATH',    envObject.BUILD_OUTPUT_PATH)
+		    }
+
+        	Triggers.setTriggers(delegate, '@daily')
             
             // wrappers
 	        Wrappers.setColorizeOutput(it)
 
-            publishers 
-            {
-                allowBrokenBuildClaiming()
-            }
+		    // publisher
+	        Publishers publishers = new Publishers()
+	        publishers.setJiraIssueUpdater(delegate)
+	        publishers.setMailer(delegate, repoObject.getEmail_list())
+	        publishers.setSlackNotifier(delegate)
+            publishers.setBrokenBuildClaiming(delegate)
             
             configure { Node project ->
                 project / 'properties' / 'com.sonyericsson.jenkins.plugins.bfa.model.ScannerJobProperty'(plugin: "build-failure-analyzer") {

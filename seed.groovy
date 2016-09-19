@@ -153,7 +153,6 @@ ymlFiles.traverse(type: FileType.FILES, nameFilter: ~/.*yml$/) { file ->
          *  Repository: jenkins job
          */
 
-
         def jobName  = getJobName(projectObject, repoObject)
         def newJob   = job(jobName)
 

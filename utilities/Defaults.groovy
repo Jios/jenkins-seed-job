@@ -24,41 +24,13 @@ class Defaults
 
         factory.job(name) 
         {
-            CommonUtils.addDefaults(delegate)
+            CommonUtils.addDefaults(delegate, projectObject, repoObject)
 
         	steps
         	{
                 // testing metaClass example: lib/src/main/groovy/echo.groovy
                 //echo('test', 123123)
             }
-
-        	if (repoObject.label != "")
-            {
-                // slave machnine label
-                label(repoObject.label)
-            }
-
-            environmentVariables 
-		    {
-		        def envObject = repoObject.environment
-
-		        env('PROJECT_NAME',         projectObject.name)
-		        env('PROJECT_KEY',          projectObject.key)
-		        env('REPO_NAME',            repoObject.name)
-		        env('BRANCH_NAMES',         repoObject.branchNames)
-		        env('SRVM_CUSTOMER_IDS',    envObject.SRVM_CUSTOMER_IDS)
-		        env('SRVM_RELEASE_FOR',     envObject.SRVM_RELEASE_FOR)
-		        env('SRVM_RELEASE_BY',      envObject.SRVM_RELEASE_BY)
-		        env('SRVM_PRODUCT_CATALOG', envObject.SRVM_PRODUCT_CATALOG)
-		        env('BUILD_PLATFORM',       envObject.BUILD_PLATFORM)
-		        env('BUILD_OUTPUT_PATH',    envObject.BUILD_OUTPUT_PATH)
-		    }
-
-		    // publisher
-	        Publishers publishers = new Publishers()
-	        publishers.setJiraIssueUpdater(it)
-	        publishers.setMailer(it, repoObject.getEmail_list())
-	        publishers.setSlackNotifier(it)
         }
     }
 
@@ -68,7 +40,7 @@ class Defaults
 
     	factory.pipelineJob(name)
     	{
-    		CommonUtils.addDefaults(delegate)
+    		CommonUtils.addDefaults(delegate, projectObject, repoObject)
 
 		    definition 
 		    {
@@ -76,11 +48,40 @@ class Defaults
 		        {
 		            sandbox()
 		            script("""
-		                node(${repoObject.label}) {
+		            	// https://www.cloudbees.com/blog/top-10-best-practices-jenkins-pipeline-plugin
+
+		            	parallel 'integration-tests':{
+						    node('mvn-3.3'){ ... }
+						}, 'functional-tests':{
+						    node('selenium'){ ... }
+						}
+
+						timeout(time:5, unit:'DAYS') {
+						    input message:'Approve deployment?', submitter: 'it-ops'
+						}
+
+						withEnv(["PATH+MAVEN=${tool 'm3'}/bin"]) {
+						    sh 'mvn clean verify'
+						}
+
+						stash excludes: 'target/', name: 'source'
+						unstash 'source'
+
+		            	stage 'build'
+		                node(${repoObject.label}) 
+		                {
 		                    stage 'Hello world'
 		                    echo 'Hello World 1'
+
+		                    stage 'pull source code'
+							checkout scm
+
+							stage 'clean up'
+							sh 'mvn clean install'
+		                    
 		                    stage 'invoke another pipeline'
 		                    build 'pipeline-being-called'
+
 		                    stage 'Goodbye world'
 		                    echo 'Goodbye world'
 		                }
