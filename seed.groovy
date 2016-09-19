@@ -134,11 +134,6 @@ ymlFiles.eachFileRecurse (FileType.FILES) { file ->
                 repoObject: repoObject
             ).build(this).with 
             {
-                steps{
-                    // metaClass example: lib/src/main/groovy/echo.groovy
-                    //echo('test', 123123)
-                }
-
                 // wrappers
                 //Wrappers.setJiraRelease(delegate, jira_release_notes, jira_project_key, jira_release_version, jira_release_filter)
                 Wrappers.setSshAgent(delegate, credentialID)

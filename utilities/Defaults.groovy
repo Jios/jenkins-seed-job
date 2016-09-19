@@ -26,6 +26,12 @@ class Defaults
         {
             CommonUtils.addDefaults(delegate)
 
+        	steps
+        	{
+                // testing metaClass example: lib/src/main/groovy/echo.groovy
+                //echo('test', 123123)
+            }
+
         	if (repoObject.label != "")
             {
                 // slave machnine label
@@ -48,7 +54,7 @@ class Defaults
 		        env('BUILD_OUTPUT_PATH',    envObject.BUILD_OUTPUT_PATH)
 		    }
 
-	        // publisher
+		    // publisher
 	        Publishers publishers = new Publishers()
 	        publishers.setJiraIssueUpdater(it)
 	        publishers.setMailer(it, repoObject.getEmail_list())
