@@ -4,6 +4,7 @@ import utilities.Triggers
 import utilities.Steps
 import utilities.Defaults
 import utilities.Wrappers
+import utilities.CustomViews
 
 import org.yaml.snakeyaml.constructor.Constructor
 import org.yaml.snakeyaml.TypeDescription
