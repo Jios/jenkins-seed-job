@@ -166,7 +166,7 @@ ymlFiles.eachFileRecurse (FileType.FILES) { file ->
             }
 
             // schedule a job
-            queue(jobName)
+            //queue(jobName)
 
             // list view
             listView(projectObject.name) 
