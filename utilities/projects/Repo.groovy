@@ -37,14 +37,14 @@ class Repo
 	{
 		def url = projectUrl + '/' + name + '.git'
 
-		return url
+		return url.toLowerCase()
 	}
 
 	String getHttpUrl(projectUrl)
 	{
 		def url = projectUrl + '/repos/' + name
 
-		return url
+		return url.toLowerCase()
 	}
 
 
