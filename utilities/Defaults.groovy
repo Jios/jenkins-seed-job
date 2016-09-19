@@ -3,7 +3,7 @@ package utilities
 import javaposse.jobdsl.dsl.DslFactory
 import javaposse.jobdsl.dsl.Job
 import javaposse.jobdsl.dsl.*
-
+import javaposse.jobdsl.dsl.jobs.WorkflowJob
 
 class Defaults
 {
@@ -54,6 +54,34 @@ class Defaults
 	        publishers.setMailer(it, repoObject.getEmail_list())
 	        publishers.setSlackNotifier(it)
         }
+    }
+
+    Job buildPipeline(DslFactory factory)
+    {
+    	def name = "pipeline-$projectObject.name-${repoObject.name}"
+
+    	factory.pipelineJob(name)
+    	{
+    		CommonUtils.addDefaults(delegate)
+
+		    definition 
+		    {
+		        cps 
+		        {
+		            sandbox()
+		            script("""
+		                node(${repoObject.label}) {
+		                    stage 'Hello world'
+		                    echo 'Hello World 1'
+		                    stage 'invoke another pipeline'
+		                    build 'pipeline-being-called'
+		                    stage 'Goodbye world'
+		                    echo 'Goodbye world'
+		                }
+		            """.stripIndent())
+		        }
+		    }
+    	}
     }
 
 }
