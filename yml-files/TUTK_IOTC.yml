@@ -7,7 +7,7 @@ name: iotc
 repos:
   - name: iotc
     label: david
-    build_command: "BUILD_FILE=x86.zip; BUILD_FILE_PATH=${BUILD_OUTPUT_PATH}/${BUILD_FILE}; cd Build/Linux; ./build.py x86 all; cd ${WORKSPACE}; mkdir -p ${BUILD_OUTPUT_PATH}; zip -r ${BUILD_FILE_PATH} Lib/Linux/x86; echo OUTPUT_FILE_PATH=${BUILD_FILE_PATH} >> properties/postbuild.properties"
+    build_command: "BUILD_FILE=x86.zip\nBUILD_FILE_PATH=${BUILD_OUTPUT_PATH}/${BUILD_FILE}\ncd Build/Linux\n./build.py x86 all\ncd ${WORKSPACE}\n\nmkdir -p ${BUILD_OUTPUT_PATH}\nzip -r ${BUILD_FILE_PATH} Lib/Linux/x86\n\necho OUTPUT_FILE_PATH=${BUILD_FILE_PATH} >> properties/postbuild.properties"
     environment:
       SRVM_CUSTOMER_IDS: 504
       SRVM_RELEASE_FOR: FAE

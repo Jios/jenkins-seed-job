@@ -29,14 +29,14 @@ class Project
 	{
 		def url = host_ssh + '/' + key
 
-		return url
+		return url.toLowerCase()
 	}
 
 	String getHttpUrl()
 	{
 		def url = host_http + '/projects/' + key
 
-		return url
+		return url.toLowerCase()
 	}
 
 	// Setter
@@ -47,6 +47,6 @@ class Project
 
 	void setHost_ssh(String host) 
 	{ 
-		this.host_ssh= host_ssh? host_ssh: host
+		this.host_ssh = host_ssh ? host_ssh: host
 	}
 }
