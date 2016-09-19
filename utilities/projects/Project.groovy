@@ -25,6 +25,20 @@ class Project
 	// Getter
 	String getKey() { return key }
 
+	String getSshUrl()
+	{
+		def url = host_ssh + '/' + key
+
+		return url
+	}
+
+	String getHttpUrl()
+	{
+		def url = host_http + '/projects/' + key
+
+		return url
+	}
+
 	// Setter
 	void setHost_http(String host) 
 	{ 

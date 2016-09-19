@@ -23,8 +23,11 @@ class SCM
 			{
 				remote
 				{
+					def sshUrl = repoObject.getSshUrl(projectObject.getSshUrl())
+					url(sshUrl)
+
 					name(repoObject.name)
-					url("${projectObject.host_ssh}/${projectObject.key}/${repoObject.name}.git")
+
 					credentials(credentialsID)
 				}
 
@@ -34,7 +37,8 @@ class SCM
 
 				browser 
 				{
-					stash("${projectObject.host_http}/projects/${projectObject.key}/repos/${repoObject.name}")
+					def httpUrl = repoObject.getHttpUrl(projectObject.getHttpUrl())
+					stash(httpUrl)
 				}
 
 				extensions

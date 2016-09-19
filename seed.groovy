@@ -14,21 +14,16 @@ import utilities.projects.YamlConstructor
 import utilities.projects.Project
 import utilities.projects.Repo
 import utilities.projects.Environment
+import utilities.projects.Jira
 
 import org.yaml.snakeyaml.Yaml
 import groovy.io.FileType
 
+import lib.src.main.groovy.*
+
 
 //////////////////////////////
 
-
-/*
- *  jira
- */ 
-def jira_release_notes   = ''
-def jira_release_version = '1.0.0'
-
-def jira_release_filter = '(Released, Closed)'
 
 /*
  *  credentials
@@ -39,14 +34,18 @@ def credentialID = 'abs_ssh'
 //////////////////////////////////////////////////////////////////////
 
 
-def getFileStreamFromFile(file)
+def getFilePath(file)
 {
     def components = file.path.split('/')
-    def dir        = components[-2] + '/' + components[-1]
+    // remove WORKSPACE path
+    def file_path  = components[-2] + '/' + components[-1]
 
-    // .yml file 
-    def fileName   = dir
-    def fileStream = getClass().getClassLoader().getResourceAsStream(fileName)
+    return file_path
+}
+
+def getFileStreamFromFilePath(file_path)
+{
+    def fileStream = getClass().getClassLoader().getResourceAsStream(file_path)
 
     return fileStream
 }
@@ -56,8 +55,9 @@ def parseYamlFileWithStream(fileStream)
     Constructor     yamlConstr = new YamlConstructor(Project.class);
     TypeDescription typeDesc   = new TypeDescription(Project.class);
     
-    typeDesc.putListPropertyType("repos", Repo.class)
+    typeDesc.putListPropertyType("repos",       Repo.class)
     typeDesc.putListPropertyType("environment", Environment.class)
+    typeDesc.putListPropertyType("jira",        Jira.class)
 
     yamlConstr.addTypeDescription(typeDesc)
 
@@ -68,6 +68,16 @@ def parseYamlFileWithStream(fileStream)
     Project project = (Project)yaml.load(fileStream);
     
     return project
+}
+
+def exportPropertiesFile(file_path)
+{
+    def properties = new Properties() 
+
+    streamFileFromWorkspace(file_path).withStream 
+    { 
+        InputStream it -> properties.load(it) 
+    }
 }
 
 
@@ -81,11 +91,12 @@ ymlFiles.eachFileRecurse (FileType.FILES) { file ->
     {
         /*
          *
-         *  Project
+         *  Project: stash/bitbucket project
          *
          */
 
-        def fileStream    = getFileStreamFromFile(file)
+        def file_path     = getFilePath(file)
+        def fileStream    = getFileStreamFromFilePath(file_path)
         def projectObject = parseYamlFileWithStream(fileStream)
 
         // folder
@@ -99,17 +110,14 @@ ymlFiles.eachFileRecurse (FileType.FILES) { file ->
         projectObject.setHost_http("${STASH_HTTP_HOST}")
         projectObject.setHost_ssh("${STASH_SSH_HOST}")
 
-
         projectObject.repos.each { repoObject ->
           
             /*
              *
-             *  Repository
+             *  Repository: jenkins job
              *
              */
 
-            def newJob = job("$projectObject.name/${repoObject.name}")
-            
             // set repo
             repoObject.setBranchNames("${BRANCH_NAMES}")
             repoObject.setSchedule("${SCM_SCHEDULE}")
@@ -117,12 +125,15 @@ ymlFiles.eachFileRecurse (FileType.FILES) { file ->
             repoObject.setReport_path('${REPORT_PATH}')
 
             // base job
-            def defaults  = new Defaults()
+            def jobName  = "$projectObject.name/${repoObject.name}"
+            def newJob   = job(jobName)
+            def defaults = new Defaults()
 
-            defaults.getBaseJob(newJob, repoObject) 
+            new Defaults(
+                projectObject: projectObject,
+                repoObject: repoObject
+            ).build(this).with 
             {
-                defaults.setEnvironmentVariables(delegate, projectObject, repoObject)
-
                 // wrappers
                 //Wrappers.setJiraRelease(delegate, jira_release_notes, jira_project_key, jira_release_version, jira_release_filter)
                 Wrappers.setSshAgent(delegate, credentialID)
@@ -152,6 +163,31 @@ ymlFiles.eachFileRecurse (FileType.FILES) { file ->
                 // -reports
                 //publishers.setPublishHtml(delegate, "Screenshots", "$repoObject.report_path/screenshots.html")
                 //publishers.setArchiveJunit(delegate, "$repoObject.report_path/report.xml")
+            }
+
+            // schedule a job
+            queue(jobName)
+
+            // list view
+            listView(projectObject.name) 
+            {
+                jobs
+                {
+                    name(jobName)
+                }
+
+                recurse(true)
+                
+                columns 
+                {
+                    status()
+                    weather()
+                    name()
+                    lastSuccess()
+                    lastFailure()
+                    lastDuration()
+                    buildButton()
+                }
             }
         }
     }

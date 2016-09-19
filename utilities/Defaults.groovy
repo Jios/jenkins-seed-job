@@ -1,13 +1,14 @@
 package utilities
 
+import javaposse.jobdsl.dsl.DslFactory
+import javaposse.jobdsl.dsl.Job
+import javaposse.jobdsl.dsl.*
+import javaposse.jobdsl.dsl.jobs.WorkflowJob
+
 class Defaults
 {
-	/*
-	 *  jenkins environment variables, e.g. env.JENKINS_URL
-	 *  https://wiki.jenkins-ci.org/display/JENKINS/Building+a+software+project
-	 */
-	// System.getenv()
-	def jenkins_url = System.getenv().JENKINS_URL
+	def projectObject
+	def repoObject
 
 	/*
 	 *  log rotator
@@ -17,58 +18,76 @@ class Defaults
 	def artifactNdaysToKeep = 7
 	def artifactNToKeep     = 14
 
-	void getBaseJob(def job, repoObject, Closure optionalClosure = null)
+	Job build(DslFactory factory) 
 	{
-		job.with
-		{
-			if (repoObject.label != "")
+		def name = "$projectObject.name/${repoObject.name}"
+
+        factory.job(name) 
+        {
+            CommonUtils.addDefaults(delegate)
+
+        	steps
+        	{
+                // testing metaClass example: lib/src/main/groovy/echo.groovy
+                //echo('test', 123123)
+            }
+
+        	if (repoObject.label != "")
             {
                 // slave machnine label
                 label(repoObject.label)
             }
 
-			logRotator
-	        {
-	            daysToKeep(ndaysToKeep)
-	            numToKeep(nToKeep)
-	            artifactDaysToKeep(artifactNdaysToKeep)
-	            artifactNumToKeep (artifactNToKeep)
-	        }
+            environmentVariables 
+		    {
+		        def envObject = repoObject.environment
 
-	        // wrappers
-	        Wrappers.setColorizeOutput(it)
+		        env('PROJECT_NAME',         projectObject.name)
+		        env('PROJECT_KEY',          projectObject.key)
+		        env('REPO_NAME',            repoObject.name)
+		        env('BRANCH_NAMES',         repoObject.branchNames)
+		        env('SRVM_CUSTOMER_IDS',    envObject.SRVM_CUSTOMER_IDS)
+		        env('SRVM_RELEASE_FOR',     envObject.SRVM_RELEASE_FOR)
+		        env('SRVM_RELEASE_BY',      envObject.SRVM_RELEASE_BY)
+		        env('SRVM_PRODUCT_CATALOG', envObject.SRVM_PRODUCT_CATALOG)
+		        env('BUILD_PLATFORM',       envObject.BUILD_PLATFORM)
+		        env('BUILD_OUTPUT_PATH',    envObject.BUILD_OUTPUT_PATH)
+		    }
 
-	        // publisher
+		    // publisher
 	        Publishers publishers = new Publishers()
 	        publishers.setJiraIssueUpdater(it)
 	        publishers.setMailer(it, repoObject.getEmail_list())
 	        publishers.setSlackNotifier(it)
-		}
+        }
+    }
 
-		if(optionalClosure) 
-		{
-			optionalClosure.delegate = job
-			optionalClosure.run()
-		}
-	}
+    Job buildPipeline(DslFactory factory)
+    {
+    	def name = "pipeline-$projectObject.name-${repoObject.name}"
 
+    	factory.pipelineJob(name)
+    	{
+    		CommonUtils.addDefaults(delegate)
 
-	void setEnvironmentVariables(def context, projectObject, repoObject)
-	{
-	    context.environmentVariables 
-	    {
-	        def envObject = repoObject.environment
+		    definition 
+		    {
+		        cps 
+		        {
+		            sandbox()
+		            script("""
+		                node(${repoObject.label}) {
+		                    stage 'Hello world'
+		                    echo 'Hello World 1'
+		                    stage 'invoke another pipeline'
+		                    build 'pipeline-being-called'
+		                    stage 'Goodbye world'
+		                    echo 'Goodbye world'
+		                }
+		            """.stripIndent())
+		        }
+		    }
+    	}
+    }
 
-	        env('PROJECT_NAME',         projectObject.name)
-	        env('PROJECT_KEY',          projectObject.key)
-	        env('REPO_NAME',            repoObject.name)
-	        env('BRANCH_NAMES',         repoObject.branchNames)
-	        env('SRVM_CUSTOMER_IDS',    envObject.SRVM_CUSTOMER_IDS)
-	        env('SRVM_RELEASE_FOR',     envObject.SRVM_RELEASE_FOR)
-	        env('SRVM_RELEASE_BY',      envObject.SRVM_RELEASE_BY)
-	        env('SRVM_PRODUCT_CATALOG', envObject.SRVM_PRODUCT_CATALOG)
-	        env('BUILD_PLATFORM',       envObject.BUILD_PLATFORM)
-	        env('BUILD_OUTPUT_PATH',    envObject.BUILD_OUTPUT_PATH)
-	    }
-	}
 }
