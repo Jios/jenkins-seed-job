@@ -102,7 +102,7 @@ def setRepo(repoObject)
 //////////////////////////////////////////////////////////////////////
 
 
-def ymlFiles = new File("${WORKSPACE}/yml-files/")
+def ymlFiles = new File("${WORKSPACE}/yamlFiles/")
 
 ymlFiles.traverse(type: FileType.FILES, nameFilter: ~/.*yml$/) { file ->
 
