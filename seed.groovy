@@ -96,8 +96,6 @@ def setRepo(repoObject)
 {
     repoObject.setBranchNames("${BRANCH_NAMES}")
     repoObject.setSchedule("${SCM_SCHEDULE}")
-    repoObject.setOutput_path('${BUILD_OUTPUT_PATH}')
-    repoObject.setReport_path('${REPORT_PATH}')
 }
 
 

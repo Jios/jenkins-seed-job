@@ -47,6 +47,16 @@ class Repo
 		return url.toLowerCase()
 	}
 
+	String getReport_path()
+	{
+		this.report_path = report_path ? report_path : '${REPORT_PATH}'
+	}
+
+	String getOutput_path()
+	{
+		this.output_path = output_path ? output_path : '${BUILD_OUTPUT_PATH}'
+	}
+	
 
 	// Setter
 	void setBranchNames(String branches) 
@@ -59,13 +69,4 @@ class Repo
 		this.schedule = schedule ? schedule : scm_schedule
 	}
 
-	void setReport_path(String path)
-	{
-		this.report_path = report_path ? report_path : path
-	}
-
-	void setOutput_path(String path)
-	{
-		this.output_path = output_path ? output_path : path
-	}
 }
