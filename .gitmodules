@@ -1,0 +1,3 @@
+[submodule "yamlFiles"]
+	path = yamlFiles
+	url = ssh://git@stash.tutk.com:7999/abs/jenkins-yml-jobs.git
