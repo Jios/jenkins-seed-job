@@ -54,7 +54,7 @@ class Repo
 
 	String getOutput_path()
 	{
-		this.output_path = output_path ? output_path : '${BUILD_OUTPUT_PATH}'
+		this.output_path = output_path ? output_path : '${OUTPUT_FILE_PATH}'
 	}
 	
 
