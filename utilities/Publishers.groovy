@@ -178,4 +178,12 @@ class Publishers
     		allowBrokenBuildClaiming()
     	}
     }
+
+    void setDownstreamJob(def context, job_name)
+    {
+    	context.publishers
+    	{
+    		downstream('project-a', 'SUCCESS')
+    	}
+    }
 }
