@@ -37,7 +37,7 @@ def set_props(props, map)
 
 
 // oauth test token: https://api.slack.com/docs/oauth-test-tokens
-def slack_test_token = "xoxp-15730259699-15737121729-17130785383-885938a11d"
+def slack_test_token = "xoxp-17652790182-17648776933-19899309844-eaf591e808"
 def slack_jenkins_token = "nLIgN4qKWOKH32e5mXiuKCww"
 def slack_fastlane_token = "https://hooks.slack.com/services/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"
 
