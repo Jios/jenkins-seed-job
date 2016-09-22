@@ -19,6 +19,18 @@ class CommonUtils
                 label(repoObject.label)
             }
             
+            parameters
+            {
+                string
+                {
+                    name('TAG_NAME')
+                    defaultValue('')
+                    description('git tag name')
+                }
+            }
+
+            deliveryPipelineConfiguration(repoObject.name, 'Build')
+
             logRotator
 	        {
 	            daysToKeep(30)
