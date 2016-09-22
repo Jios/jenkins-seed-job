@@ -35,4 +35,23 @@ class Steps
 			}
 		}
 	}
+
+	void copyArtifactsFromUpstream(def context, include, exclude, targetPath)
+	{
+		context.steps
+		{
+			copyArtifacts('upstream') 
+			{
+	            includePatterns(include)
+	            excludePatterns(exclude)
+	            targetDirectory(targetPath)
+	            flatten()
+	            optional()
+	            buildSelector 
+	            {
+	                latestSuccessful(true)
+	            }
+	        }
+		}
+	}
 }
