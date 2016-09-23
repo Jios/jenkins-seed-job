@@ -292,3 +292,7 @@ ymlFiles.traverse(type: FileType.FILES, nameFilter: ~/.*yml$/) { file ->
         }
     }
 }
+
+new CustomViews(
+        viewName: 'Deliver pipeline view'
+    ).createDeliverPipelineView(this)
