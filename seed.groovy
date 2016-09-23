@@ -250,46 +250,8 @@ ymlFiles.traverse(type: FileType.FILES, nameFilter: ~/.*yml$/) { file ->
             }
         }
 
-
         // schedule a job
         //queue(jobName + '-scm')
-
-            repoObject: repoObject
-        ).build(this).with 
-        {
-            // wrappers
-            //Wrappers.setJiraRelease(delegate, jira_release_notes, jira_project_key, jira_release_version, jira_release_filter)
-            Wrappers.setSshAgent(delegate, credentialID)
-
-            // triggers
-            Triggers.setTriggers(delegate, repoObject.schedule)
-
-            // scm: git
-            SCM.setSCM(delegate, projectObject, repoObject, credentialID)
-            
-            // build steps
-            Steps steps = new Steps()
-            steps.setBuildScript(delegate, repoObject.build_command)
-            steps.setEnvInjectBuilder(delegate)
-
-            // publishers
-            Publishers publishers = new Publishers()
-            // -archive
-            publishers.setArchiveArtifacts(delegate, "$repoObject.output_path/*")
-            // -git
-            publishers.setGitPublisher(delegate, repoObject.name)
-            // -jira
-            publishers.setJiraIssue(delegate)
-            //publishers.setJiraVersion(delegate, jira_project_key)
-            // -srvm
-            publishers.setSRVMScript(delegate)
-            // -reports
-            //publishers.setPublishHtml(delegate, "Screenshots", "$repoObject.report_path/screenshots.html")
-            //publishers.setArchiveJunit(delegate, "$repoObject.report_path/report.xml")
-            
-            // schedule a job
-            //queue(jobName)
-        }
     }
 }
 
