@@ -42,8 +42,6 @@ class CommonUtils
 		        env('BUILD_PLATFORM',       envObject.BUILD_PLATFORM)
 		        env('BUILD_OUTPUT_PATH',    envObject.BUILD_OUTPUT_PATH)
 		    }
-
-        	Triggers.setTriggers(delegate, '@daily')
             
             // wrappers
 	        Wrappers.setColorizeOutput(it)
