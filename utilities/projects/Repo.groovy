@@ -1,6 +1,7 @@
 package utilities.projects
 
 import utilities.projects.Environment
+import utilities.projects.Jira
 
 
 class Repo
@@ -14,6 +15,7 @@ class Repo
 	public List<String> branchNames = null
 	public List<String> email_list
 	public Environment environment
+	public Jira        jira
 
 	Repo()
 	{
