@@ -52,6 +52,7 @@ class CommonUtils
 	        publishers.setMailer(delegate, repoObject.getEmail_list())
 	        publishers.setSlackNotifier(delegate)
             publishers.setBrokenBuildClaiming(delegate)
+            publishers.setJiraIssue(delegate)
             
             configure { Node project ->
                 project / 'properties' / 'com.sonyericsson.jenkins.plugins.bfa.model.ScannerJobProperty'(plugin: "build-failure-analyzer") {
