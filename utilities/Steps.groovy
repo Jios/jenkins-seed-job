@@ -36,15 +36,17 @@ class Steps
 		}
 	}
 
-	void copyArtifactsFromUpstream(def context, include, exclude, targetPath)
+
+	static void copyArtifactsFromUpstream(def context, job_name, include, exclude, targetPath)
 	{
 		context.steps
 		{
-			copyArtifacts('upstream') 
+			copyArtifacts(job_name) 
 			{
 	            includePatterns(include)
 	            excludePatterns(exclude)
 	            targetDirectory(targetPath)
+	            fingerprintArtifacts()
 	            flatten()
 	            optional()
 	            buildSelector 
