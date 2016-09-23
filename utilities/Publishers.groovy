@@ -186,4 +186,15 @@ class Publishers
     		downstream('project-a', 'SUCCESS')
     	}
     }
+
+    static void publishWorkspace(def context)
+    {
+    	context.publishers 
+    	{
+	        publishCloneWorkspace('**')
+	        {
+	        	archiveMethod('ZIP')
+	        }
+	    }
+    }
 }
