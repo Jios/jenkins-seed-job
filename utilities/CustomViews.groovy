@@ -42,8 +42,8 @@ class CustomViews
             showChangeLog()
             pipelines 
             {
-                component('android', 'KalayHome2.0/Android_SourceCode-scm')
-                component('ios', 'iOS_Vtech/smarthome-baseapp-scm')
+                component('android', 'KalayHome2.0/Android_SourceCode')
+                component('ios', 'iOS_Vtech/smarthome-baseapp')
                 //regex(/compile-subsystem-(.*)/)
             }
         }
