@@ -129,7 +129,10 @@ ymlFiles.traverse(type: FileType.FILES, nameFilter: ~/.*yml$/) { file ->
             jobs
             {
                 def jobName = getJobName(projectObject, repoObject)
-                name(jobName)
+                names(jobName + '-scm',    \
+                      jobName + '-build',  \
+                      jobName + '-deploy', \
+                      jobName + '-jira')
             }
         }
     }
@@ -142,14 +145,115 @@ ymlFiles.traverse(type: FileType.FILES, nameFilter: ~/.*yml$/) { file ->
          *  Repository: jenkins job
          */
 
-        def jobName  = getJobName(projectObject, repoObject)
-        def newJob   = job(jobName)
-
-        // base job
-        def defaults = new Defaults()
+        def jobName = getJobName(projectObject, repoObject)
 
         new Defaults(
             projectObject: projectObject,
+            repoObject: repoObject,
+            name: jobName
+        ).initStage(this).with 
+        {
+            def downstream_job = jobName + "-build"
+
+            deliveryPipelineConfiguration(repoObject.name, 'SCM')
+            
+            Wrappers.setSshAgent(delegate, credentialID)
+
+            Triggers.setTriggers(delegate, '@daily')
+            Triggers.setTriggers(delegate, repoObject.schedule)
+
+            SCM.setSCM(delegate, projectObject, repoObject, credentialID)
+
+            Steps.preparePropertiesFiles(delegate)
+
+            Publishers.publishWorkspace(delegate)
+            Publishers.setDownstreamJob(delegate, downstream_job)
+        }
+
+        new Defaults(
+            projectObject: projectObject,
+            repoObject: repoObject,
+            name: jobName
+        ).buildStage(this).with 
+        {
+            def downstream_job = jobName + "-test"
+
+            deliveryPipelineConfiguration(repoObject.name, 'Build')
+
+            //Steps.copyArtifactsFromUpstream(delegate, jobName, '*', '', '.')
+            SCM.cloneUpstreamWorkspace(delegate, jobName)
+
+            // build steps
+            Steps steps = new Steps()
+            steps.setBuildScript(delegate, repoObject.build_command)
+            steps.setEnvInjectBuilder(delegate)
+
+            // publishers
+            Publishers publishers = new Publishers()
+            publishers.setArchiveArtifacts(delegate, "$repoObject.output_path/*")
+            publishers.setGitPublisher(delegate, repoObject.name)
+            
+            Publishers.setDownstreamJob(delegate, downstream_job)
+        }
+
+        new Defaults(
+            projectObject: projectObject,
+            repoObject: repoObject,
+            name: jobName
+        ).testStage(this).with 
+        {
+            def downstream_job = jobName + "-deploy"
+
+            deliveryPipelineConfiguration(repoObject.name, 'test')
+
+            SCM.cloneUpstreamWorkspace(delegate, jobName)
+
+            Publishers publishers = new Publishers()
+
+            publishers.setPublishHtml(delegate, "Screenshots", "$repoObject.report_path/screenshots.html")
+            publishers.setArchiveJunit(delegate, "$repoObject.report_path/report.xml")
+
+            Publishers.setDownstreamJob(delegate, downstream_job)
+        }
+        
+        new Defaults(
+            projectObject: projectObject,
+            repoObject: repoObject,
+            name: jobName
+        ).deployStage(this).with 
+        {
+            deliveryPipelineConfiguration(repoObject.name, 'deploy')
+
+            upstream_job = jobName + "-build"
+            include_path = repoObject.output_path + "/*"
+            Steps.copyArtifactsFromUpstream(delegate, upstream_job, include_path, '', repoObject.output_path)
+
+            Publishers publishers = new Publishers()
+            publishers.setSRVMScript(delegate)
+
+            if (repoObject.jira) 
+            {
+                Publishers.setDownstreamJob(delegate, "${jobName}-jira")
+
+                new Defaults(
+                    projectObject: projectObject,
+                    repoObject: repoObject,
+                    name: jobName
+                ).jiraStage(this).with 
+                {
+                    deliveryPipelineConfiguration(repoObject.name, 'jira')
+
+                    Wrappers.setJiraRelease(delegate, repoObject.jira)
+
+                    publishers.setJiraVersion(delegate, repoObject.jira.key)
+                }
+            }
+        }
+
+
+        // schedule a job
+        //queue(jobName + '-scm')
+
             repoObject: repoObject
         ).build(this).with 
         {
