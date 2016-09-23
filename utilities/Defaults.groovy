@@ -101,13 +101,13 @@ class Defaults
 
             CommonUtils.addDefaults(delegate, projectObject, repoObject)
 
-            upstream_job = name + "-build"
-            include_path = repoObject.output_path + "/*"
-            Steps.copyArtifactsFromUpstream(delegate, upstream_job, include_path, '', repoObject.output_path)
+            String upstream     = name + "-build"
+            String include_path = repoObject.output_path + "/*"
+            Steps.copyArtifactsFromUpstream(delegate, upstream, include_path, '', repoObject.output_path)
 
             if (repoObject.jira) 
             {
-                Publishers.setDownstreamJob(delegate, "${name}-jira")
+                Publishers.setDownstreamJob(delegate, name + "-jira")
             }
         }
     }
