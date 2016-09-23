@@ -12,19 +12,16 @@ class Wrappers
 		}
 	}
 
-	static void setJiraRelease(def context, notes, project_key, release_version, release_filter)
+	static void setJiraRelease(def context, jiraObject)
 	{
 		context.wrappers 
 		{
-			///
-			/// jira release notes
-			///
 			generateJiraReleaseNotes 
 			{
-				environmentVariable(notes)
-				projectKey(project_key)
-				release(release_version)
-				filter("status in ${release_filter}")
+				projectKey(jiraObject.key)
+				environmentVariable(jiraObject.release_notes)
+				release(jiraObject.release_version)
+				filter("status in ${jiraObject.release_filter}")
 			}
 		}
 	}
