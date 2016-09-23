@@ -179,11 +179,11 @@ class Publishers
     	}
     }
 
-    void setDownstreamJob(def context, job_name)
+    static void setDownstreamJob(def context, job_name)
     {
     	context.publishers
     	{
-    		downstream('project-a', 'SUCCESS')
+    		downstream(job_name, 'SUCCESS')
     	}
     }
 
