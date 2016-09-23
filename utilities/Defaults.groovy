@@ -9,6 +9,7 @@ class Defaults
 {
 	def projectObject
 	def repoObject
+	def name
 
 	/*
 	 *  log rotator
@@ -20,8 +21,6 @@ class Defaults
 
 	Job build(DslFactory factory) 
 	{
-		def name = "$projectObject.name/${repoObject.name}"
-
         factory.job(name) 
         {
             CommonUtils.addDefaults(delegate, projectObject, repoObject)
@@ -31,6 +30,67 @@ class Defaults
                 // testing metaClass example: lib/src/main/groovy/echo.groovy
                 //echo('test', 123123)
             }
+        }
+    }
+
+    Job initStage(DslFactory factory) 
+	{
+        factory.job(name) 
+        {
+            CommonUtils.addDefaults(delegate, projectObject, repoObject)
+
+            Publishers.setDownstreamJob(delegate, "${name}-build")
+
+            parameters
+            {
+                string
+                {
+                    name('TAG_NAME')
+                    defaultValue('')
+                    description('git tag name')
+                }
+            }
+        }
+    }
+
+    Job buildStage(DslFactory factory) 
+	{
+        factory.job(name + '-build') 
+        {
+            CommonUtils.addDefaults(delegate, projectObject, repoObject)
+
+            Publishers.setDownstreamJob(delegate, "${name}-test")
+        }
+    }
+
+    Job testStage(DslFactory factory) 
+	{
+        factory.job(name + '-test') 
+        {
+            CommonUtils.addDefaults(delegate, projectObject, repoObject)
+
+            Publishers.setDownstreamJob(delegate, "${name}-deploy")
+        }
+    }
+
+    Job deployStage(DslFactory factory) 
+	{
+        factory.job(name + '-deploy') 
+        {
+            CommonUtils.addDefaults(delegate, projectObject, repoObject)
+
+            if (repoObject.jira) 
+            {
+                Publishers.setDownstreamJob(delegate, "${name}-jira")
+            }
+        }
+    }
+
+    Job jiraStage(DslFactory factory) 
+	{
+        factory.job(name + '-jira') 
+        {
+            CommonUtils.addDefaults(delegate, projectObject, repoObject)
         }
     }
 
