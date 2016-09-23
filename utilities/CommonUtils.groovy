@@ -19,8 +19,6 @@ class CommonUtils
                 label(repoObject.label)
             }
 
-            deliveryPipelineConfiguration(repoObject.name, 'Build')
-
             logRotator
 	        {
 	            daysToKeep(30)
