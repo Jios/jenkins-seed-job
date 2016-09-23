@@ -138,6 +138,22 @@ ymlFiles.traverse(type: FileType.FILES, nameFilter: ~/.*yml$/) { file ->
         }
     }
 
+    new CustomViews(
+        viewName: projectObject.name + ' pipeline view'
+    ).createDeliverPipelineView(this).with 
+    {
+        pipelines
+        {
+            //pipelines{regex(/$projectObject.name\/-/)}
+            projectObject.repos.each { repoObject ->
+
+                def jobName = getJobName(projectObject, repoObject)
+                component(repoObject.name, jobName)
+            }
+        }
+    }
+
+
     projectObject.repos.each { repoObject ->
       
         setRepo(repoObject)
@@ -221,6 +237,3 @@ ymlFiles.traverse(type: FileType.FILES, nameFilter: ~/.*yml$/) { file ->
     }
 }
 
-new CustomViews(
-        viewName: 'Deliver pipeline view'
-    ).createDeliverPipelineView(this)
