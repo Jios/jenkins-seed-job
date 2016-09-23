@@ -6,13 +6,8 @@ class Steps
 	{
 		String properties_file = '${WORKSPACE}/properties/prebuild.properties'
 		
-		def sh_script = '''mkdir -p ${WORKSPACE}/properties 
-						  |touch ${WORKSPACE}/properties/prebuild.properties
-						  |touch ${WORKSPACE}/properties/postbuild.properties 
-						  |'''.stripMargin()
     	context.steps 
         {
-        	shell(sh_script)
         	envInjectBuilder 
 			{
 				propertiesFilePath(properties_file)
@@ -36,6 +31,17 @@ class Steps
 		}
 	}
 
+	static void preparePropertiesFiles(def context)
+	{
+		def sh_script = '''mkdir -p ${WORKSPACE}/properties 
+						  |touch ${WORKSPACE}/properties/prebuild.properties
+						  |touch ${WORKSPACE}/properties/postbuild.properties 
+						  |'''.stripMargin()
+    	context.steps 
+        {
+        	shell(sh_script)
+        }
+	}
 
 	static void copyArtifactsFromUpstream(def context, job_name, include, exclude, targetPath)
 	{
