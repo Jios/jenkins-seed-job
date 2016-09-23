@@ -18,16 +18,6 @@ class CommonUtils
                 // slave machnine label
                 label(repoObject.label)
             }
-            
-            parameters
-            {
-                string
-                {
-                    name('TAG_NAME')
-                    defaultValue('')
-                    description('git tag name')
-                }
-            }
 
             deliveryPipelineConfiguration(repoObject.name, 'Build')
 
