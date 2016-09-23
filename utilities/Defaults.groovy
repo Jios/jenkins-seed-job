@@ -70,7 +70,7 @@ class Defaults
 
             CommonUtils.addDefaults(delegate, projectObject, repoObject)
 
-			SCM.cloneUpstreamWorkspace(delegate, jobName)
+			SCM.cloneUpstreamWorkspace(delegate, name)
 			
 			Publishers publishers = new Publishers()
             publishers.setArchiveArtifacts(delegate, "$repoObject.output_path/*")
@@ -87,7 +87,7 @@ class Defaults
 
             CommonUtils.addDefaults(delegate, projectObject, repoObject)
 
-            SCM.cloneUpstreamWorkspace(delegate, jobName)
+            SCM.cloneUpstreamWorkspace(delegate, name)
 
             Publishers.setDownstreamJob(delegate, "${name}-deploy")
         }
@@ -101,7 +101,7 @@ class Defaults
 
             CommonUtils.addDefaults(delegate, projectObject, repoObject)
 
-            upstream_job = jobName + "-build"
+            upstream_job = name + "-build"
             include_path = repoObject.output_path + "/*"
             Steps.copyArtifactsFromUpstream(delegate, upstream_job, include_path, '', repoObject.output_path)
 
