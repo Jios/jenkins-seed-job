@@ -48,13 +48,13 @@ def git_ssh_host  = "ssh://git@stash.tutk.com:7999"
 def crashlytics_api_key      = "a903f72a6ffdd06539302df50101d05b48d830ea"
 def crashlytics_build_secret = "039b2c50ea29ef03f71f5cb93b598bfdfe4a19a23054f66cdddd13275803e599"
 
-def branch_names = '''['refs/remotes/*/master',
-					  |'refs/remotes/*/develop',
-					  |'refs/remotes/*/release',
-					  |'refs/remotes/*/release/*',
-					  |'refs/remotes/*/feature/*',
-					  |'refs/remotes/*/hotfix/*',
-					  |'refs/remotes/*/bugfix/*']'''.stripMargin().replaceAll('\n', '')
+def branch_names = '''['*/master',
+					  |'*/develop',
+					  |'*/release',
+					  |'*/release/*',
+					  |'*/feature/*',
+					  |'*/hotfix/*',
+					  |'*/bugfix/*']'''.stripMargin().replaceAll('\n', '')
 
 // env variable map
 def envMap = [:]
