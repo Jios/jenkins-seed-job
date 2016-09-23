@@ -54,8 +54,7 @@ def branch_names = '''['refs/remotes/*/master',
 					  |'refs/remotes/*/release/*',
 					  |'refs/remotes/*/feature/*',
 					  |'refs/remotes/*/hotfix/*',
-					  |'refs/remotes/*/bugfix/*', 
-					  |'refs/remotes/tags/${TAG_NAME}']'''.stripMargin().replaceAll('\n', '')
+					  |'refs/remotes/*/bugfix/*']'''.stripMargin().replaceAll('\n', '')
 
 // env variable map
 def envMap = [:]
