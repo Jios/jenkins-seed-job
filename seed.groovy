@@ -139,7 +139,7 @@ ymlFiles.traverse(type: FileType.FILES, nameFilter: ~/.*yml$/) { file ->
     }
 
     new CustomViews(
-        viewName: projectObject.name + ' pipeline view'
+        viewName: 'DPV: ' + projectObject.name
     ).createDeliverPipelineView(this).with 
     {
         pipelines
