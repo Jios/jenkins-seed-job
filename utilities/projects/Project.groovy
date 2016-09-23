@@ -22,6 +22,15 @@ class Project
 		
 	}
 
+	static String getFilePath(file)
+	{
+	    def components = file.path.split('/')
+	    // remove WORKSPACE path
+	    def file_path  = components[-2] + '/' + components[-1]
+
+	    return file_path
+	}
+
 	// Getter
 	String getKey() { return key }
 

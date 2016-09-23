@@ -33,15 +33,6 @@ def credentialID = 'abs_ssh'
 //////////////////////////////////////////////////////////////////////
 
 
-def getFilePath(file)
-{
-    def components = file.path.split('/')
-    // remove WORKSPACE path
-    def file_path  = components[-2] + '/' + components[-1]
-
-    return file_path
-}
-
 def getFileStreamFromFilePath(file_path)
 {
     def fileStream = getClass().getClassLoader().getResourceAsStream(file_path)
@@ -110,7 +101,7 @@ ymlFiles.traverse(type: FileType.FILES, nameFilter: ~/.*yml$/) { file ->
      *  Project: stash/bitbucket project
      */
 
-    def file_path     = getFilePath(file)
+    def file_path     = Project.getFilePath(file)
     def fileStream    = getFileStreamFromFilePath(file_path)
     def projectObject = parseYamlFileWithStream(fileStream)
 
