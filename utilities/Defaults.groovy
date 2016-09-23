@@ -33,14 +33,22 @@ class Defaults
         }
     }
 
+
+/////////////////////////////////////////////////////////////////////// 
+
+
     Job initStage(DslFactory factory) 
 	{
         factory.job(name) 
         {
+        	deliveryPipelineConfiguration(repoObject.name, 'scm')
+
             CommonUtils.addDefaults(delegate, projectObject, repoObject)
 
+            Publishers.publishWorkspace(delegate)
             Publishers.setDownstreamJob(delegate, "${name}-build")
 
+            /*
             parameters
             {
                 string
@@ -50,6 +58,7 @@ class Defaults
                     description('git tag name')
                 }
             }
+            */
         }
     }
 
@@ -57,7 +66,14 @@ class Defaults
 	{
         factory.job(name + '-build') 
         {
+			deliveryPipelineConfiguration(repoObject.name, 'build')
+
             CommonUtils.addDefaults(delegate, projectObject, repoObject)
+
+			SCM.cloneUpstreamWorkspace(delegate, jobName)
+			
+			Publishers publishers = new Publishers()
+            publishers.setArchiveArtifacts(delegate, "$repoObject.output_path/*")
 
             Publishers.setDownstreamJob(delegate, "${name}-test")
         }
@@ -67,7 +83,11 @@ class Defaults
 	{
         factory.job(name + '-test') 
         {
+			deliveryPipelineConfiguration(repoObject.name, 'test')
+
             CommonUtils.addDefaults(delegate, projectObject, repoObject)
+
+            SCM.cloneUpstreamWorkspace(delegate, jobName)
 
             Publishers.setDownstreamJob(delegate, "${name}-deploy")
         }
@@ -77,7 +97,13 @@ class Defaults
 	{
         factory.job(name + '-deploy') 
         {
+			deliveryPipelineConfiguration(repoObject.name, 'deploy')
+
             CommonUtils.addDefaults(delegate, projectObject, repoObject)
+
+            upstream_job = jobName + "-build"
+            include_path = repoObject.output_path + "/*"
+            Steps.copyArtifactsFromUpstream(delegate, upstream_job, include_path, '', repoObject.output_path)
 
             if (repoObject.jira) 
             {
@@ -90,9 +116,15 @@ class Defaults
 	{
         factory.job(name + '-jira') 
         {
+        	deliveryPipelineConfiguration(repoObject.name, 'jira')
+
             CommonUtils.addDefaults(delegate, projectObject, repoObject)
         }
     }
+
+
+/////////////////////////////////////////////////////////////////////// 
+
 
     Job buildPipeline(DslFactory factory)
     {
