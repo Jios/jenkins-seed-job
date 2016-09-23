@@ -60,4 +60,12 @@ class SCM
 			}
 		}
 	}
+
+	static void cloneUpstreamWorkspace(def context, parentProject)
+	{
+		context.scm
+		{
+			cloneWorkspace(parentProject, 'Successful')
+		}
+	}
 }
