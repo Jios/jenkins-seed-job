@@ -40,12 +40,14 @@ class CustomViews
             enableManualTriggers()
             showAvatars()
             showChangeLog()
+            /*
             pipelines 
             {
                 component('android', 'KalayHome2.0/Android_SourceCode')
                 component('ios', 'iOS_Vtech/smarthome-baseapp')
                 //regex(/compile-subsystem-(.*)/)
             }
+            */
         }
     }
 }
