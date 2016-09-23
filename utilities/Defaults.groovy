@@ -46,7 +46,7 @@ class Defaults
             CommonUtils.addDefaults(delegate, projectObject, repoObject)
 
             Publishers.publishWorkspace(delegate)
-            Publishers.setDownstreamJob(delegate, "${name}-build")
+            Publishers.setDownstreamJob(delegate, this.name + "-build")
 
             /*
             parameters
@@ -70,12 +70,12 @@ class Defaults
 
             CommonUtils.addDefaults(delegate, projectObject, repoObject)
 
-			SCM.cloneUpstreamWorkspace(delegate, name)
+			SCM.cloneUpstreamWorkspace(delegate, this.name)
 			
 			Publishers publishers = new Publishers()
             publishers.setArchiveArtifacts(delegate, "$repoObject.output_path/*")
 
-            Publishers.setDownstreamJob(delegate, "${name}-test")
+            Publishers.setDownstreamJob(delegate, this.name + "-test")
         }
     }
 
@@ -87,9 +87,9 @@ class Defaults
 
             CommonUtils.addDefaults(delegate, projectObject, repoObject)
 
-            SCM.cloneUpstreamWorkspace(delegate, name)
+            SCM.cloneUpstreamWorkspace(delegate, this.name)
 
-            Publishers.setDownstreamJob(delegate, "${name}-deploy")
+            Publishers.setDownstreamJob(delegate, this.name + "-deploy")
         }
     }
 
@@ -101,13 +101,13 @@ class Defaults
 
             CommonUtils.addDefaults(delegate, projectObject, repoObject)
 
-            String upstream     = name + "-build"
+            String upstream     = this.name + "-build"
             String include_path = repoObject.output_path + "/*"
             Steps.copyArtifactsFromUpstream(delegate, upstream, include_path, '', repoObject.output_path)
 
             if (repoObject.jira) 
             {
-                Publishers.setDownstreamJob(delegate, name + "-jira")
+                Publishers.setDownstreamJob(delegate, this.name + "-jira")
             }
         }
     }
