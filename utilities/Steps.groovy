@@ -6,6 +6,12 @@ class Steps
 	{
 		String properties_file = '${WORKSPACE}/properties/prebuild.properties'
 		
+		def sh_script = '''git checkout ${GIT_BRANCH}
+						  |
+						  |mkdir -p ${WORKSPACE}/properties 
+						  |touch ${WORKSPACE}/properties/prebuild.properties
+						  |touch ${WORKSPACE}/properties/postbuild.properties 
+						  |'''.stripMargin()
     	context.steps 
         {
         	envInjectBuilder 

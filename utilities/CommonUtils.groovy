@@ -18,7 +18,9 @@ class CommonUtils
                 // slave machnine label
                 label(repoObject.label)
             }
-            
+
+            deliveryPipelineConfiguration(repoObject.name, 'Build')
+
             logRotator
 	        {
 	            daysToKeep(30)

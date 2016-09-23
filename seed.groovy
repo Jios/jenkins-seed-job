@@ -131,6 +131,7 @@ ymlFiles.traverse(type: FileType.FILES, nameFilter: ~/.*yml$/) { file ->
                 def jobName = getJobName(projectObject, repoObject)
                 names(jobName,             \
                       jobName + '-build',  \
+                      jobName + '-test',   \
                       jobName + '-deploy', \
                       jobName + '-jira')
             }
