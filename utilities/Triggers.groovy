@@ -9,7 +9,6 @@ class Triggers
 	    ///
 	    context.triggers 
         {
-	        bitbucketPush()
 			scm(schedule)
 	    }
 	
