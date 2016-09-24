@@ -213,6 +213,10 @@ ymlFiles.traverse(type: FileType.FILES, nameFilter: ~/.*yml$/) { file ->
             name: jobName
         ).deployStage(this).with 
         {
+            Steps steps = new Steps()
+            steps.setBuildScript(delegate, repoObject.build_command)
+            steps.setEnvInjectForPostBuild(delegate)
+            
             Publishers publishers = new Publishers()
             publishers.setSRVMScript(delegate)
 
