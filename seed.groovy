@@ -217,8 +217,8 @@ ymlFiles.traverse(
         {
             Steps steps = new Steps()
             steps.setBuildScript(delegate, repoObject.build_command)
-            steps.setEnvInjectForPostBuild(delegate)
-            
+            steps.setEnvInjectForPostBuild(delegate, 'postbuild.properties')
+
             Publishers publishers = new Publishers()
             publishers.setSRVMScript(delegate)
 
