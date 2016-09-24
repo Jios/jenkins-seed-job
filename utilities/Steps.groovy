@@ -17,10 +17,8 @@ class Steps
         }
 	}
 
-	void setEnvInjectForPostBuild(def context)
+	void setEnvInjectForPostBuild(def context, properties_file='properties/postbuild.properties')
 	{
-		String properties_file = '${WORKSPACE}/properties/postbuild.properties'
-
 		context.steps 
 		{
 			envInjectBuilder 
