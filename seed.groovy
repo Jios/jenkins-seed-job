@@ -178,6 +178,9 @@ ymlFiles.traverse(type: FileType.FILES, nameFilter: ~/.*yml$/) { file ->
             SCM.setSCM(delegate, projectObject, repoObject, credentialID)
 
             Steps.preparePropertiesFiles(delegate)
+
+            Publishers publishers = new Publishers()
+            publishers.setGitPublisher(delegate, repoObject.name)
         }
 
         new Defaults(
