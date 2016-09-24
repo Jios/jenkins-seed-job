@@ -105,6 +105,9 @@ class Defaults
             String include_path = repoObject.output_path + "/*"
             Steps.copyArtifactsFromUpstream(delegate, upstream, include_path, '', repoObject.output_path)
 
+            Publishers publishers = new Publishers()
+            publishers.setArchiveArtifacts(delegate, "$repoObject.output_path/*")
+            
             if (repoObject.jira) 
             {
                 Publishers.setDownstreamJob(delegate, this.name + "-jira")
