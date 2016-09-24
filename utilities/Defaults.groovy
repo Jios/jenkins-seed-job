@@ -73,7 +73,7 @@ class Defaults
 			SCM.cloneUpstreamWorkspace(delegate, this.name)
 			
 			Publishers publishers = new Publishers()
-            publishers.setArchiveArtifacts(delegate, "$repoObject.output_path/*")
+            publishers.setArchiveArtifacts(delegate, "$repoObject.output_path/*,properties/*.properties")
 
             Publishers.setDownstreamJob(delegate, this.name + "-test")
         }
