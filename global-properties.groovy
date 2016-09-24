@@ -73,6 +73,8 @@ envMap = ["SLACK_PYTHON_TOKEN": slack_test_token,
 		  "CRASHLYTICS_API_TOKEN": crashlytics_api_key,
 		  "CRASHLYTICS_BUILD_SECRET": crashlytics_build_secret,
 		  "SCM_SCHEDULE": "@daily",
+		  "PREBUILD_PROPERTIES_PATH": "properties/prebuild.properties",
+		  "POSTBUILD_PROPERTIES_PATH": "properties/postbuild.properties",
 		  "BUILD_OUTPUT_FILENAME": "",
 		  "BUILD_OUTPUT_PATH": "output",
 		  "REPORT_PATH": "reports"]
