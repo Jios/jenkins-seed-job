@@ -101,9 +101,8 @@ class Defaults
 
             CommonUtils.addDefaults(delegate, projectObject, repoObject)
 
-            String upstream     = this.name + "-build"
-            String include_path = repoObject.output_path + "/*"
-            Steps.copyArtifactsFromUpstream(delegate, upstream, include_path, '', repoObject.output_path)
+            String upstream = this.name + "-build"
+            Steps.copyArtifactsFromUpstream(delegate, upstream, '', '', '')
 
             Publishers publishers = new Publishers()
             publishers.setArchiveArtifacts(delegate, "$repoObject.output_path/*")
