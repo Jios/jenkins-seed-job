@@ -6,10 +6,6 @@ class Steps
 	{
 		String properties_file = '${WORKSPACE}/properties/prebuild.properties'
 		
-		def sh_script = '''mkdir -p ${WORKSPACE}/properties 
-						  |touch ${WORKSPACE}/properties/prebuild.properties
-						  |touch ${WORKSPACE}/properties/postbuild.properties 
-						  |'''.stripMargin()
     	context.steps 
         {
         	envInjectBuilder 
