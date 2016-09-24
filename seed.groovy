@@ -189,7 +189,7 @@ ymlFiles.traverse(type: FileType.FILES, nameFilter: ~/.*yml$/) { file ->
             // build steps
             Steps steps = new Steps()
             steps.setBuildScript(delegate, repoObject.build_command)
-            steps.setEnvInjectBuilder(delegate)
+            steps.setEnvInjectForPostBuild(delegate)
         }
 
         new Defaults(
