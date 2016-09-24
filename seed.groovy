@@ -190,10 +190,6 @@ ymlFiles.traverse(type: FileType.FILES, nameFilter: ~/.*yml$/) { file ->
             Steps steps = new Steps()
             steps.setBuildScript(delegate, repoObject.build_command)
             steps.setEnvInjectBuilder(delegate)
-
-            // publishers
-            Publishers publishers = new Publishers()
-            publishers.setGitPublisher(delegate, repoObject.name)
         }
 
         new Defaults(
