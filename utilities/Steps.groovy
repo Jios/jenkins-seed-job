@@ -39,7 +39,7 @@ class Steps
 						  |touch ${WORKSPACE}/properties/prebuild.properties
 						  |touch ${WORKSPACE}/properties/postbuild.properties 
 						  |
-						  |echo GIT_BRANCH=${GIT_BRANCH} ${WORKSPACE}/properties/postbuild.properties 
+						  |echo GIT_BRANCH=${GIT_BRANCH} >> ${WORKSPACE}/properties/postbuild.properties 
 						  |'''.stripMargin()
     	context.steps 
         {
