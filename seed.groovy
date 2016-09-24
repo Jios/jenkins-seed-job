@@ -95,7 +95,9 @@ def setRepo(repoObject)
 
 def ymlFiles = new File("${WORKSPACE}/yamlFiles/")
 
-ymlFiles.traverse(type: FileType.FILES, nameFilter: ~/.*yml$/) { file ->
+ymlFiles.traverse(
+    type: FileType.FILES, 
+    nameFilter: ~/.*yml$/) { file ->
 
     /**
      *  Project: stash/bitbucket project

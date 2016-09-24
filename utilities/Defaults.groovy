@@ -142,7 +142,7 @@ class Defaults
 		        cps 
 		        {
 		            sandbox()
-		            script("""
+		            script('''
 		            	// https://www.cloudbees.com/blog/top-10-best-practices-jenkins-pipeline-plugin
 
 		            	parallel 'integration-tests':{
@@ -180,7 +180,7 @@ class Defaults
 		                    stage 'Goodbye world'
 		                    echo 'Goodbye world'
 		                }
-		            """.stripIndent())
+		            '''.stripIndent())
 		        }
 		    }
     	}

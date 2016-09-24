@@ -48,7 +48,6 @@ class SCM
 					
 					submoduleOptions 
 					{
-
 						// Disables submodules processing.
 						disable false
 						// Retrieves all submodules recursively.
