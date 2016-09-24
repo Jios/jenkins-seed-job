@@ -91,14 +91,17 @@ class Publishers
     {
     	def shell_script = '''cd ${WORKSPACE}
     						 |
-    						 |git submodule add -b master http://stash.tutk.com:7990/scm/abs/srvm.git srvm
-							 |#git submodule update srvm --init
-							 |cd srvm && git reset --hard && git pull && cd ..
+    						 |#git submodule add -b master http://stash.tutk.com:7990/scm/abs/srvm.git srvm
+							 |#cd srvm && git reset --hard && git pull && cd ..
 							 |
-							 |git submodule add -b master http://stash.tutk.com:7990/scm/abs/slack.git slack
-							 |cd slack && git reset --hard && git pull && cd ..
+    						 |git clone -b master http://stash.tutk.com:7990/scm/abs/srvm.git srvm
+							 |git clone -b master http://stash.tutk.com:7990/scm/abs/slack.git slack
 							 |
 							 |python srvm/srvm.py
+							 |
+							 |echo "remove srvm and slack repos"
+							 |rm -rf srvm
+							 |rm -rf slack
 							 |'''.stripMargin()
 
     	context.publishers
