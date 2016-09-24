@@ -216,7 +216,6 @@ ymlFiles.traverse(
         ).deployStage(this).with 
         {
             Steps steps = new Steps()
-            steps.setBuildScript(delegate, repoObject.build_command)
             steps.setEnvInjectForPostBuild(delegate, 'postbuild.properties')
 
             Publishers publishers = new Publishers()
