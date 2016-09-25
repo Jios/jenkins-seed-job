@@ -32,6 +32,14 @@ def set_props(props, map)
 	}
 }
 
+def getWorkspace()
+{
+	def build    = Thread.currentThread().executable
+	def workspace = build.workspace.toString()
+
+	return workspace
+}
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
