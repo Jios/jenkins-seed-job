@@ -85,8 +85,8 @@ Map load_map_from_properties_file(filepath)
 
 
 // oauth test token: https://api.slack.com/docs/oauth-test-tokens
-def slack_test_token = "xoxp-17652790182-83055396336-83062265957-e531214efd33104a2f384406a5c4f3db"
-def slack_jenkins_token = "nLIgN4qKWOKH32e5mXiuKCww"
+def slack_test_token     = "xoxp-17652790182-83055396336-83062265957-e531214efd33104a2f384406a5c4f3db"
+def slack_jenkins_token  = "nLIgN4qKWOKH32e5mXiuKCww"
 def slack_fastlane_token = "https://hooks.slack.com/services/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"
 
 def git_http_host = "http://stash.tutk.com:7990"
