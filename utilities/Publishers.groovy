@@ -141,7 +141,7 @@ class Publishers
     			forcePush(false)
 
 				// Specify tags to push at the completion of the build.
-				def name = 'jenkins/${GIT_BRANCH}/${BUILD_NUMBER}'
+				def name = 'jenkins/${branch}/${BUILD_NUMBER}'
 	            def msg  = 'tag from Jenkins, ${NODE_NAME}:${JOB_NAME} ${BUILD_URL}'
 
 				tagsToPush 
