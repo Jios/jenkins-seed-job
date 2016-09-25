@@ -41,12 +41,12 @@ def getWorkspace()
 }
 
 // http://stackoverflow.com/questions/12747946/how-to-write-and-read-a-file-with-a-hashmap
-void save_map_to_properties_file(map) 
+void save_map_to_properties_file(map, filename) 
 {
 	def path = getWorkspace() + '/properties'
 	new File(path).mkdir()
 
-	def filepath  = path + "/envPro.properties"
+	def filepath  = path + "/" + filename
 
 
 	Properties properties = new Properties();
@@ -161,4 +161,10 @@ for (slave in slaves)
 
     slave.save()
 }
+
+/// properties
+//
+save_map_to_properties_file(envMap, "envPro.properties)
+
+
 
