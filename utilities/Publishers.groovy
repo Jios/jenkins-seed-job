@@ -182,6 +182,8 @@ class Publishers
 	        publishCloneWorkspace('**')
 	        {
 	        	archiveMethod('ZIP')
+	        	overrideDefaultExcludes(true)
+	        	criteria('Successful')
 	        }
 	    }
     }
