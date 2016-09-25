@@ -23,21 +23,19 @@ import groovy.io.FileType
 import lib.src.main.groovy.*
 
 
-//////////////////////////////
-
-
-// credentials
-def credentialID = 'abs_ssh'
-
-
 //////////////////////////////////////////////////////////////////////
 
 
+
+/**
+ *  yaml parser
+ */
 def parseYamlFileWithStream(fileStream)
 {
     Constructor     yamlConstr = new YamlConstructor(Project.class);
     TypeDescription typeDesc   = new TypeDescription(Project.class);
     
+    //                           key            Class
     typeDesc.putListPropertyType("repos",       Repo.class)
     typeDesc.putListPropertyType("environment", Environment.class)
     typeDesc.putListPropertyType("jira",        Jira.class)
@@ -53,16 +51,24 @@ def parseYamlFileWithStream(fileStream)
     return project
 }
 
-def exportPropertiesFile(file_path)
+/**
+ *  load
+ */
+Properties loadPropertiesFile(file_path)
 {
     def properties = new Properties() 
 
-    streamFileFromWorkspace(file_path).withStream 
-    { 
-        InputStream it -> properties.load(it) 
+    streamFileFromWorkspace(file_path).withStream { InputStream it -> 
+
+        properties.load(it) 
     }
+
+    return properties
 }
 
+/**
+ *  get
+ */
 def getJobName(projectObject, repoObject)
 {
     def jobName  = "$projectObject.name/${repoObject.name}"
@@ -70,6 +76,9 @@ def getJobName(projectObject, repoObject)
     return jobName
 }
 
+/**
+ *  set
+ */
 def setProject(projectObject)
 {
     projectObject.setHost_http("${STASH_HTTP_HOST}")
@@ -80,6 +89,159 @@ def setRepo(repoObject)
 {
     repoObject.setBranchNames("${BRANCH_NAMES}")
     repoObject.setSchedule("${SCM_SCHEDULE}")
+}
+
+
+//////////////////////////////////////////////////////////////////////
+
+
+def view_list(projectObject)
+{
+    new CustomViews(
+        viewName: projectObject.name
+    ).createListView(this).with 
+    {
+        projectObject.repos.each { repoObject ->
+            jobs
+            {
+                def jobName = getJobName(projectObject, repoObject)
+                names(jobName,             \
+                      jobName + '-build',  \
+                      jobName + '-test',   \
+                      jobName + '-deploy', \
+                      jobName + '-jira')
+            }
+        }
+    }
+}
+
+def view_deliver_pipeline(projectObject)
+{
+    new CustomViews(
+        viewName: 'DPV ' + projectObject.name
+    ).createDeliverPipelineView(this).with 
+    {
+        pipelines
+        {
+            //pipelines{regex(/$projectObject.name\/-/)}
+            projectObject.repos.each { repoObject ->
+
+                def jobName = getJobName(projectObject, repoObject)
+                component(repoObject.name, jobName)
+            }
+        }
+    }
+}
+
+
+//////////////////////////////////////////////////////////////////////
+
+
+def folder_project(projectObject)
+{
+    folder(projectObject.name)
+    {
+        displayName(projectObject.name)
+        description("$projectObject.name project")
+    }
+}
+
+
+//////////////////////////////////////////////////////////////////////
+
+
+def stage_scm(jobName, projectObject, repoObject)
+{
+    new Defaults(
+        projectObject: projectObject,
+        repoObject: repoObject,
+        name: jobName
+    ).initStage(this).with 
+    {
+        def credentialID = 'abs_ssh'
+
+        Wrappers.setSshAgent(delegate, credentialID)
+
+        Triggers.setTriggers(delegate, '@daily')
+        Triggers.setTriggers(delegate, repoObject.schedule)
+
+        SCM.setSCM(delegate, projectObject, repoObject, credentialID)
+
+        sh_script = readFileFromWorkspace("scripts/prepare-properties.sh")
+        Steps.preparePropertiesFiles(delegate, sh_script)
+
+        new Steps().setEnvInjectForPostBuild(delegate)
+
+        Publishers publishers = new Publishers()
+        publishers.setGitPublisher(delegate, repoObject.name)
+    }
+}
+
+def stage_build(jobName, projectObject, repoObject)
+{
+    new Defaults(
+        projectObject: projectObject,
+        repoObject: repoObject,
+        name: jobName
+    ).buildStage(this).with 
+    {
+        // build steps
+        Steps steps = new Steps()
+        steps.setBuildScript(delegate, repoObject.build_command)
+        steps.setEnvInjectForPostBuild(delegate)
+    }
+}
+
+def stage_test(jobName, projectObject, repoObject)
+{
+    new Defaults(
+        projectObject: projectObject,
+        repoObject: repoObject,
+        name: jobName
+    ).testStage(this).with 
+    {
+        Publishers publishers = new Publishers()
+
+        publishers.setPublishHtml(delegate, "Screenshots", "$repoObject.report_path/screenshots.html")
+        publishers.setArchiveJunit(delegate, "$repoObject.report_path/report.xml")
+    }
+}
+
+def stage_deploy(jobName, projectObject, repoObject)
+{
+    new Defaults(
+        projectObject: projectObject,
+        repoObject: repoObject,
+        name: jobName
+    ).deployStage(this).with 
+    {
+        Steps steps = new Steps()
+        steps.setEnvInjectForPostBuild(delegate, 'postbuild.properties')
+
+        sh_script = readFileFromWorkspace("scripts/srvm-deploy.sh")
+        
+        Publishers publishers = new Publishers()
+        publishers.setSRVMScript(delegate, sh_script)
+
+        if (repoObject.jira) 
+        {
+            stage_jira(jobName, projectObject, repoObject)                
+        }
+    }
+}
+
+def stage_jira(jobName, projectObject, repoObject)
+{
+    new Defaults(
+        projectObject: projectObject,
+        repoObject: repoObject,
+        name: jobName
+    ).jiraStage(this).with 
+    {
+        Wrappers.setJiraRelease(delegate, repoObject.jira)
+
+        publishers.setJiraVersion(delegate, repoObject.jira.key)
+    }
 }
 
 
@@ -105,48 +267,16 @@ ymlFiles.traverse(
     /**
      *  folder
      */ 
+    
+     folder_project(projectObject)
 
-    folder(projectObject.name)
-    {
-        displayName(projectObject.name)
-        description("$projectObject.name project")
-    }
 
     /**
-     *  list view
+     *  views
      */
 
-    new CustomViews(
-        viewName: projectObject.name
-    ).createListView(this).with 
-    {
-        projectObject.repos.each { repoObject ->
-            jobs
-            {
-                def jobName = getJobName(projectObject, repoObject)
-                names(jobName,             \
-                      jobName + '-build',  \
-                      jobName + '-test',   \
-                      jobName + '-deploy', \
-                      jobName + '-jira')
-            }
-        }
-    }
-
-    new CustomViews(
-        viewName: 'DPV ' + projectObject.name
-    ).createDeliverPipelineView(this).with 
-    {
-        pipelines
-        {
-            //pipelines{regex(/$projectObject.name\/-/)}
-            projectObject.repos.each { repoObject ->
-
-                def jobName = getJobName(projectObject, repoObject)
-                component(repoObject.name, jobName)
-            }
-        }
-    }
+    view_list(projectObject)
+    view_deliver_pipeline(projectObject)
 
 
     projectObject.repos.each { repoObject ->
@@ -159,80 +289,10 @@ ymlFiles.traverse(
 
         def jobName = getJobName(projectObject, repoObject)
 
-        new Defaults(
-            projectObject: projectObject,
-            repoObject: repoObject,
-            name: jobName
-        ).initStage(this).with 
-        {
-            Wrappers.setSshAgent(delegate, credentialID)
-
-            Triggers.setTriggers(delegate, '@daily')
-            Triggers.setTriggers(delegate, repoObject.schedule)
-
-            SCM.setSCM(delegate, projectObject, repoObject, credentialID)
-
-            sh_script = readFileFromWorkspace("scripts/prepare-properties.sh")
-            Steps.preparePropertiesFiles(delegate, sh_script)
-
-            new Steps().setEnvInjectForPostBuild(delegate)
-
-            Publishers publishers = new Publishers()
-            publishers.setGitPublisher(delegate, repoObject.name)
-        }
-
-        new Defaults(
-            projectObject: projectObject,
-            repoObject: repoObject,
-            name: jobName
-        ).buildStage(this).with 
-        {
-            // build steps
-            Steps steps = new Steps()
-            steps.setBuildScript(delegate, repoObject.build_command)
-            steps.setEnvInjectForPostBuild(delegate)
-        }
-
-        new Defaults(
-            projectObject: projectObject,
-            repoObject: repoObject,
-            name: jobName
-        ).testStage(this).with 
-        {
-            Publishers publishers = new Publishers()
-
-            publishers.setPublishHtml(delegate, "Screenshots", "$repoObject.report_path/screenshots.html")
-            publishers.setArchiveJunit(delegate, "$repoObject.report_path/report.xml")
-        }
-        
-        new Defaults(
-            projectObject: projectObject,
-            repoObject: repoObject,
-            name: jobName
-        ).deployStage(this).with 
-        {
-            Steps steps = new Steps()
-            steps.setEnvInjectForPostBuild(delegate, 'postbuild.properties')
-
-            sh_script = readFileFromWorkspace("scripts/srvm-deploy.sh")
-            
-            Publishers publishers = new Publishers()
-            publishers.setSRVMScript(delegate, sh_script)
-
-            if (repoObject.jira) 
-            {
-                new Defaults(
-                    projectObject: projectObject,
-                    repoObject: repoObject,
-                    name: jobName
-                ).jiraStage(this).with 
-                {
-                    Wrappers.setJiraRelease(delegate, repoObject.jira)
-
-                    publishers.setJiraVersion(delegate, repoObject.jira.key)
-                }
-            }
-        }
+        stage_scm   (jobName, projectObject, repoObject)
+        stage_build (jobName, projectObject, repoObject)
+        stage_test  (jobName, projectObject, repoObject)
+        stage_deploy(jobName, projectObject, repoObject)
 
         // schedule a job
         //queue(jobName + '-scm')
