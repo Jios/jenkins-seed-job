@@ -40,6 +40,46 @@ def getWorkspace()
 	return workspace
 }
 
+// http://stackoverflow.com/questions/12747946/how-to-write-and-read-a-file-with-a-hashmap
+void save_map_to_properties_file(map) 
+{
+	def path = getWorkspace() + '/properties'
+	new File(path).mkdir()
+
+	def filepath  = path + "/envPro.properties"
+
+
+	Properties properties = new Properties();
+	properties.putAll(map);
+
+/*
+	for (Map.Entry<String,String> entry : map.entrySet()) 
+	{
+	    properties.put(entry.getKey(), entry.getValue());
+	}
+	*/
+
+	properties.store(new FileOutputStream(filepath), null);
+}
+
+Map load_map_from_properties_file(filepath)
+{
+	Map<String, String> map = new HashMap<String, String>();
+	Properties properties   = new Properties();
+
+	properties.load(new FileInputStream(filepath));
+
+	map = new HashMap<Object, Object>(properties)
+/*
+	for (String key : properties.stringPropertyNames()) 
+	{
+	   map.put(key, properties.get(key).toString());
+	}
+	*/
+
+	return map
+}
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
