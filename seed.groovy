@@ -179,7 +179,10 @@ ymlFiles.traverse(
 
             SCM.setSCM(delegate, projectObject, repoObject, credentialID)
 
-            Steps.preparePropertiesFiles(delegate)
+            sh_script = readFileFromWorkspace("scripts/prepare-properties.sh")
+            Steps.preparePropertiesFiles(delegate, sh_script)
+
+            new Steps().setEnvInjectForPostBuild(delegate)
 
             Publishers publishers = new Publishers()
             publishers.setGitPublisher(delegate, repoObject.name)
@@ -218,8 +221,10 @@ ymlFiles.traverse(
             Steps steps = new Steps()
             steps.setEnvInjectForPostBuild(delegate, 'postbuild.properties')
 
+            sh_script = readFileFromWorkspace("scripts/srvm-deploy.sh")
+            
             Publishers publishers = new Publishers()
-            publishers.setSRVMScript(delegate)
+            publishers.setSRVMScript(delegate, sh_script)
 
             if (repoObject.jira) 
             {

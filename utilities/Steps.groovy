@@ -29,16 +29,8 @@ class Steps
 		}
 	}
 
-	static void preparePropertiesFiles(def context)
+	static void preparePropertiesFiles(def context, sh_script='')
 	{
-		def sh_script = '''git checkout ${GIT_BRANCH}
-						  |
-						  |mkdir -p ${WORKSPACE}/properties 
-						  |touch ${WORKSPACE}/properties/prebuild.properties
-						  |touch ${WORKSPACE}/properties/postbuild.properties 
-						  |
-						  |echo GIT_BRANCH=${GIT_BRANCH} >> ${WORKSPACE}/properties/postbuild.properties 
-						  |'''.stripMargin()
     	context.steps 
         {
         	shell(sh_script)
