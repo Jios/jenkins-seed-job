@@ -8,4 +8,4 @@ mkdir -p ${WORKSPACE}/properties
 touch $prebuild_path
 touch $postbuild_path
 
-python -c 'import os; git_branch = os.environ["GIT_BRANCH"].split("/"); repo = git_branch[0]; branch = "/".join(git_branch[1:]); f = open("postbuild.properties", "a"); f.write("GIT_BRANCH=" + branch + "\n"); f.close()'
+python -c 'import os; git_branch = os.environ["GIT_BRANCH"].split("/"); repo = git_branch[0]; branch = "/".join(git_branch[1:]); f = open(os.environ["postbuild_path"], "a"); f.write("GIT_BRANCH=" + branch + "\n"); f.close()'
