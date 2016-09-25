@@ -164,7 +164,7 @@ for (slave in slaves)
 
 /// properties
 //
-save_map_to_properties_file(envMap, "envPro.properties)
+save_map_to_properties_file(envMap, "envPro.properties")
 
 
 
