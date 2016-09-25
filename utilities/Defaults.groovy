@@ -5,6 +5,11 @@ import javaposse.jobdsl.dsl.Job
 import javaposse.jobdsl.dsl.*
 import javaposse.jobdsl.dsl.jobs.WorkflowJob
 
+/**
+ *  DslFactory: https://github.com/jenkinsci/job-dsl-plugin/blob/master/job-dsl-core/src/main/groovy/javaposse/jobdsl/dsl/DslFactory.groovy
+ *  Job: https://github.com/jenkinsci/job-dsl-plugin/blob/master/job-dsl-core/src/main/groovy/javaposse/jobdsl/dsl/Job.groovy
+ */
+
 class Defaults
 {
 	def projectObject
@@ -41,7 +46,7 @@ class Defaults
 	{
         factory.job(name) 
         {
-        	deliveryPipelineConfiguration(repoObject.name, 'scm')
+        	deliveryPipelineConfiguration(repoObject.name, 'scm')  // Job
 
             CommonUtils.addDefaults(delegate, projectObject, repoObject)
 
