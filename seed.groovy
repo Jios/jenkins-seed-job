@@ -33,13 +33,6 @@ def credentialID = 'abs_ssh'
 //////////////////////////////////////////////////////////////////////
 
 
-def getFileStreamFromFilePath(file_path)
-{
-    def fileStream = getClass().getClassLoader().getResourceAsStream(file_path)
-
-    return fileStream
-}
-
 def parseYamlFileWithStream(fileStream)
 {
     Constructor     yamlConstr = new YamlConstructor(Project.class);
@@ -104,7 +97,7 @@ ymlFiles.traverse(
      */
 
     def file_path     = Project.getFilePath(file)
-    def fileStream    = getFileStreamFromFilePath(file_path)
+    def fileStream    = streamFileFromWorkspace(file_path)  // DslFactory
     def projectObject = parseYamlFileWithStream(fileStream)
 
     setProject(projectObject)
