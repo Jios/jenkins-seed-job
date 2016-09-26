@@ -187,4 +187,12 @@ class Publishers
 	        }
 	    }
     }
+
+    static void collectDownstreamTestResults(def context)
+    {
+    	context.publishers
+    	{
+    		aggregateDownstreamTestResults()
+    	}
+    }
 }

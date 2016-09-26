@@ -52,6 +52,7 @@ class Defaults
 
             Publishers.publishWorkspace(delegate)
             Publishers.setDownstreamJob(delegate, this.name + "-build")
+            Publishers.collectDownstreamTestResults(delegate)
 
             /*
             parameters
