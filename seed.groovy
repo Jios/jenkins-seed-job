@@ -248,6 +248,16 @@ def stage_jira(jobName, projectObject, repoObject)
 //////////////////////////////////////////////////////////////////////
 
 
+/**
+ *  load env properties file from global-properties.groovy
+ */
+
+loadPropertiesFile("properties/envPro.properties")
+
+/**
+ *  load yaml files
+ */
+
 def ymlFiles = new File("${WORKSPACE}/yamlFiles/")
 
 ymlFiles.traverse(
