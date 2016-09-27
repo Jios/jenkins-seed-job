@@ -1,11 +1,20 @@
 package utilities
+import lib.src.main.groovy.echo
 
 class Steps
 {
 	void setBuildScript (def context, sh_command)
 	{
-		String properties_file = '${WORKSPACE}/properties/prebuild.properties'
-		
+		// stage: build
+    	context.steps 
+        {
+            shell(sh_command)
+        }
+	}
+
+	void setEnvInjectForPreBuild(def context, properties_file='properties/prebuild.properties')
+	{
+		// stage: build
     	context.steps 
         {
         	envInjectBuilder 
@@ -13,7 +22,6 @@ class Steps
 				propertiesFilePath(properties_file)
 				propertiesContent('')
 			}
-            shell(sh_command)
         }
 	}
 
@@ -31,6 +39,7 @@ class Steps
 
 	static void preparePropertiesFiles(def context, sh_script='')
 	{
+		// stage: scm
     	context.steps 
         {
         	shell(sh_script)

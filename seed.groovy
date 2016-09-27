@@ -187,6 +187,7 @@ def stage_build(jobName, projectObject, repoObject)
     {
         // build steps
         Steps steps = new Steps()
+        steps.setEnvInjectForPreBuild(delegate)
         steps.setBuildScript(delegate, repoObject.build_command)
         steps.setEnvInjectForPostBuild(delegate)
     }
