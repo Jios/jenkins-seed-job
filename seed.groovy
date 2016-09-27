@@ -167,7 +167,7 @@ def stage_scm(jobName, projectObject, repoObject)
 
         SCM.setSCM(delegate, projectObject, repoObject, credentialID)
 
-        sh_script = readFileFromWorkspace("scripts/prepare-properties.sh")
+        sh_script = readFileFromWorkspace("scripts/prepare-properties.py")
         Steps.preparePropertiesFiles(delegate, sh_script)
 
         new Steps().setEnvInjectForPostBuild(delegate)
