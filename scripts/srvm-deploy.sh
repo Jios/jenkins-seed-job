@@ -1,3 +1,5 @@
+#!/bin/bash
+
 cd ${WORKSPACE}
 
 echo "remove srvm and slack repos"
