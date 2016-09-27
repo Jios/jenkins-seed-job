@@ -112,7 +112,7 @@ class Defaults
             Steps.copyArtifactsFromUpstream(delegate, upstream, '', '', '')
 
             Publishers publishers = new Publishers()
-            publishers.setArchiveArtifacts(delegate, "$repoObject.output_path/*")
+            publishers.setArchiveArtifacts(delegate, "**/*")
             
             if (repoObject.jira) 
             {
