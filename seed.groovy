@@ -16,6 +16,7 @@ import utilities.projects.Project
 import utilities.projects.Repo
 import utilities.projects.Environment
 import utilities.projects.Jira
+import utilities.enums.EnumEnvironment
 
 import org.yaml.snakeyaml.Yaml
 import groovy.io.FileType
@@ -25,6 +26,9 @@ import lib.src.main.groovy.*
 
 //////////////////////////////////////////////////////////////////////
 
+build_env = EnumEnvironment.development
+
+//////////////////////////////////////////////////////////////////////
 
 
 /**
@@ -162,8 +166,10 @@ def stage_scm(jobName, projectObject, repoObject)
 
         Wrappers.setSshAgent(delegate, credentialID)
 
-        Triggers.setTriggers(delegate, '@daily')
-        Triggers.setTriggers(delegate, repoObject.schedule)
+        if (build_env == EnumEnvironment.production)
+        {
+            Triggers.setTriggers(delegate, repoObject.schedule)
+        }
 
         SCM.setSCM(delegate, projectObject, repoObject, credentialID)
 
@@ -298,7 +304,10 @@ ymlFiles.traverse(
         stage_deploy(jobName, projectObject, repoObject)
 
         // schedule a job
-        //queue(jobName)
+        if (build_env == EnumEnvironment.production)
+        {
+            queue(jobName)
+        }
     }
 }
 
