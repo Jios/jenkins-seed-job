@@ -1,5 +1,6 @@
 package utilities
 
+import lib.src.main.groovy.echo
 import javaposse.jobdsl.dsl.DslFactory
 import javaposse.jobdsl.dsl.Job
 import javaposse.jobdsl.dsl.*
