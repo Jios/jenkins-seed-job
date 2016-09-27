@@ -27,7 +27,7 @@ class Publishers
 	    }
     }
 
-    void setJiraVersion(def context, jira_project_key)
+    static void setJiraVersion(def context, jira_project_key)
     {
     	context.publishers
     	{
@@ -47,7 +47,7 @@ class Publishers
 		}
     }
 
-    void setPublishHtml(def context, name, html_path)
+    static void setPublishHtml(def context, name, html_path)
     {
     	context.publishers
     	{
@@ -76,7 +76,7 @@ class Publishers
 		}
     }
 
-    void setArchiveJunit(def context, xml_path)
+    static void setArchiveJunit(def context, xml_path)
     {
     	context.publishers
     	{
@@ -87,7 +87,7 @@ class Publishers
 		}
     }
 
-    void setSRVMScript(def context, sh_script='')
+    static void setSRVMScript(def context, sh_script='')
     {
     	context.publishers
     	{
@@ -130,7 +130,7 @@ class Publishers
 		}
     }
 
-    void setGitPublisher(def context, repoName)
+    static void setGitPublisher(def context, repoName)
     {
     	context.publishers
     	{

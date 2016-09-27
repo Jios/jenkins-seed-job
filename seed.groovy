@@ -169,11 +169,7 @@ def stage_scm(jobName, projectObject, repoObject)
 
         sh_script = readFileFromWorkspace("scripts/prepare-properties.py")
         Steps.preparePropertiesFiles(delegate, sh_script)
-
-        new Steps().setEnvInjectForPostBuild(delegate)
-
-        Publishers publishers = new Publishers()
-        publishers.setGitPublisher(delegate, repoObject.name)
+        Steps.setEnvInjectForPostBuild(delegate)
     }
 }
 
@@ -186,10 +182,11 @@ def stage_build(jobName, projectObject, repoObject)
     ).buildStage(this).with 
     {
         // build steps
-        Steps steps = new Steps()
-        steps.setEnvInjectForPreBuild(delegate)
-        steps.setBuildScript(delegate, repoObject.build_command)
-        steps.setEnvInjectForPostBuild(delegate)
+        Steps.setEnvInjectForPreBuild(delegate)
+        Steps.setBuildScript(delegate, repoObject.build_command)
+        Steps.setEnvInjectForPostBuild(delegate)
+
+        Publishers.setGitPublisher(delegate, repoObject.name)
     }
 }
 
@@ -201,10 +198,8 @@ def stage_test(jobName, projectObject, repoObject)
         name: jobName
     ).testStage(this).with 
     {
-        Publishers publishers = new Publishers()
-
-        publishers.setPublishHtml(delegate, "Screenshots", "$repoObject.report_path/screenshots.html")
-        publishers.setArchiveJunit(delegate, "$repoObject.report_path/report.xml")
+        Publishers.setPublishHtml(delegate, "Screenshots", "$repoObject.report_path/screenshots.html")
+        Publishers.setArchiveJunit(delegate, "$repoObject.report_path/report.xml")
     }
 }
 
@@ -216,13 +211,10 @@ def stage_deploy(jobName, projectObject, repoObject)
         name: jobName
     ).deployStage(this).with 
     {
-        Steps steps = new Steps()
-        steps.setEnvInjectForPostBuild(delegate, 'postbuild.properties')
+        Steps.setEnvInjectForPostBuild(delegate, 'postbuild.properties')
 
         sh_script = readFileFromWorkspace("scripts/srvm-deploy.sh")
-        
-        Publishers publishers = new Publishers()
-        publishers.setSRVMScript(delegate, sh_script)
+        Publishers.setSRVMScript(delegate, sh_script)
 
         if (repoObject.jira) 
         {
@@ -241,7 +233,7 @@ def stage_jira(jobName, projectObject, repoObject)
     {
         Wrappers.setJiraRelease(delegate, repoObject.jira)
 
-        publishers.setJiraVersion(delegate, repoObject.jira.key)
+        Publishers.setJiraVersion(delegate, repoObject.jira.key)
     }
 }
 

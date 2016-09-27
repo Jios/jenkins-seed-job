@@ -3,7 +3,7 @@ import lib.src.main.groovy.echo
 
 class Steps
 {
-	void setBuildScript (def context, sh_command)
+	static void setBuildScript (def context, sh_command)
 	{
 		// stage: build
     	context.steps 
@@ -12,7 +12,7 @@ class Steps
         }
 	}
 
-	void setEnvInjectForPreBuild(def context, properties_file='properties/prebuild.properties')
+	static void setEnvInjectForPreBuild(def context, properties_file='properties/prebuild.properties')
 	{
 		// stage: build
     	context.steps 
@@ -25,7 +25,7 @@ class Steps
         }
 	}
 
-	void setEnvInjectForPostBuild(def context, properties_file='${WORKSPACE}/properties/postbuild.properties')
+	static void setEnvInjectForPostBuild(def context, properties_file='${WORKSPACE}/properties/postbuild.properties')
 	{
 		context.steps 
 		{
