@@ -306,7 +306,7 @@ ymlFiles.traverse(
         stage_deploy(jobName, projectObject, repoObject)
 
         // schedule a job
-        //queue(jobName + '-scm')
+        //queue(jobName)
     }
 }
 
