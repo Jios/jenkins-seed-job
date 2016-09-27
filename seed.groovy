@@ -176,6 +176,8 @@ def stage_scm(jobName, projectObject, repoObject)
         sh_script = readFileFromWorkspace("scripts/prepare-properties.py")
         Steps.preparePropertiesFiles(delegate, sh_script)
         Steps.setEnvInjectForPostBuild(delegate)
+
+        Publishers.setGitPublisher(delegate, repoObject.name)
     }
 }
 
@@ -191,8 +193,6 @@ def stage_build(jobName, projectObject, repoObject)
         Steps.setEnvInjectForPreBuild(delegate)
         Steps.setBuildScript(delegate, repoObject.build_command)
         Steps.setEnvInjectForPostBuild(delegate)
-
-        Publishers.setGitPublisher(delegate, repoObject.name)
     }
 }
 
