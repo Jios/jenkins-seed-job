@@ -72,6 +72,7 @@ class Publishers
 	        {
 	          	pattern(path_pattern)
                 exclude(exclude_pattern)
+                fingerprint(true)
 	        	onlyIfSuccessful()
 	        }
 		}
