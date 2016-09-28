@@ -64,13 +64,14 @@ class Publishers
 		}
     }
 
-    void setArchiveArtifacts(def context, path_pattern)
+    void setArchiveArtifacts(def context, path_pattern, exclude_pattern='')
     {
     	context.publishers
     	{
     		archiveArtifacts
 	        {
 	          	pattern(path_pattern)
+                exclude(exclude_pattern)
 	        	onlyIfSuccessful()
 	        }
 		}

@@ -112,7 +112,7 @@ class Defaults
             Steps.copyArtifactsFromUpstream(delegate, upstream, '', '', '')
 
             Publishers publishers = new Publishers()
-            publishers.setArchiveArtifacts(delegate, "**/*")
+            publishers.setArchiveArtifacts(delegate, "**/*", "srvm/**/*,slack/**/*")
             
             if (repoObject.jira) 
             {
