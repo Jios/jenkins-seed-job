@@ -49,8 +49,6 @@ class Defaults
         {
         	deliveryPipelineConfiguration(repoObject.name, 'scm')  // Job
 
-            CommonUtils.addDefaults(delegate, projectObject, repoObject)
-
             Publishers.publishWorkspace(delegate)
             Publishers.setDownstreamJob(delegate, this.name + "-build")
             Publishers.collectDownstreamTestResults(delegate)
@@ -66,6 +64,8 @@ class Defaults
                 }
             }
             */
+
+            CommonUtils.addDefaults(delegate, projectObject, repoObject)
         }
     }
 
@@ -75,14 +75,14 @@ class Defaults
         {
 			deliveryPipelineConfiguration(repoObject.name, 'build')
 
-            CommonUtils.addDefaults(delegate, projectObject, repoObject)
-
 			SCM.cloneUpstreamWorkspace(delegate, this.name)
 			
 			Publishers publishers = new Publishers()
             publishers.setArchiveArtifacts(delegate, "$repoObject.output_path/*,properties/*.properties")
 
             Publishers.setDownstreamJob(delegate, this.name + "-test")
+
+            CommonUtils.addDefaults(delegate, projectObject, repoObject)
         }
     }
 
@@ -92,11 +92,11 @@ class Defaults
         {
 			deliveryPipelineConfiguration(repoObject.name, 'test')
 
-            CommonUtils.addDefaults(delegate, projectObject, repoObject)
-
             SCM.cloneUpstreamWorkspace(delegate, this.name)
 
             Publishers.setDownstreamJob(delegate, this.name + "-deploy")
+
+            CommonUtils.addDefaults(delegate, projectObject, repoObject)
         }
     }
 
@@ -105,8 +105,6 @@ class Defaults
         factory.job(name + '-deploy') 
         {
 			deliveryPipelineConfiguration(repoObject.name, 'deploy')
-
-            CommonUtils.addDefaults(delegate, projectObject, repoObject)
 
             String upstream = this.name + "-build"
             Steps.copyArtifactsFromUpstream(delegate, upstream, '', '', '')
@@ -118,6 +116,8 @@ class Defaults
             {
                 Publishers.setDownstreamJob(delegate, this.name + "-jira")
             }
+
+            CommonUtils.addDefaults(delegate, projectObject, repoObject)
         }
     }
 
