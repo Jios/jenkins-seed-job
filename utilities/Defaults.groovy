@@ -118,6 +118,8 @@ class Defaults
             }
 
             CommonUtils.addDefaults(delegate, projectObject, repoObject)
+
+            label('deploy')
         }
     }
 
