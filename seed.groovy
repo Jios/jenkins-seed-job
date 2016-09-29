@@ -166,10 +166,8 @@ def stage_scm(jobName, projectObject, repoObject)
 
         Wrappers.setSshAgent(delegate, credentialID)
 
-        if (build_env == EnumEnvironment.production)
-        {
-            Triggers.setTriggers(delegate, repoObject.schedule)
-        }
+        Triggers.setTriggers(delegate, repoObject.schedule)
+        //if (build_env == EnumEnvironment.production){}
 
         SCM.setSCM(delegate, projectObject, repoObject, credentialID)
 
