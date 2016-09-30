@@ -46,14 +46,14 @@ class SCM
 					//cleanBeforeCheckout()
 					cleanAfterCheckout()
 					
-					submoduleOptions 
+					submoduleOption
 					{
 						// Disables submodules processing.
-						disable false
+						disableSubmodules(false)
 						// Retrieves all submodules recursively.
-						recursive true
+						recursiveSubmodules(true)
 						// Retrieves the tip of the configured branch in .gitmodules.
-						tracking false
+						trackingSubmodules(false)
 						// Use credentials from the default remote of the parent project.
 						parentCredentials(true)
 					}
