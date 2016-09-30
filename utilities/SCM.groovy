@@ -56,6 +56,9 @@ class SCM
 						trackingSubmodules(false)
 						// Use credentials from the default remote of the parent project.
 						parentCredentials(true)
+						//
+						reference('')
+						timeout(5)
 					}
 				}
 			}
