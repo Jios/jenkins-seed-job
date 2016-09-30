@@ -55,7 +55,7 @@ class SCM
 						// Retrieves the tip of the configured branch in .gitmodules.
 						tracking false
 						// Use credentials from the default remote of the parent project.
-						parentCredentials true
+						parentCredentials(true)
 					}
 				}
 			}
