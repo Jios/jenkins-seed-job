@@ -1,0 +1,40 @@
+---
+
+# project info
+key: KH2
+name: KalayHome2.0
+
+# repositories
+repos:
+  - name: Android_SourceCode
+    label: android
+    build_command: bash build.sh
+    environment:  # environment variables
+      SRVM_CUSTOMER_IDS: 422
+      SRVM_RELEASE_FOR: PM
+      SRVM_RELEASE_BY: howard_chu
+      SRVM_PRODUCT_CATALOG: Kalay Home
+      BUILD_PLATFORM: android
+      BUILD_OUTPUT_PATH: output
+      REPORT_PATH: reports
+    email_list: 
+      - howard_chu@tutk.com
+      - chain_chen@tutk.com
+      - cj_huang@tutk.com
+      - vita_lin@tutk.com
+      - stanley_huang@tutk.com
+      - yiting_cheng@tutk.com
+      - jian_li@tutk.com
+  - name: iOS_DataModel
+    label: ios
+    build_command: fastlane ios build
+    environment:
+      SRVM_RELEASE_FOR: PM
+      SRVM_RELEASE_BY: jian_li
+      SRVM_PRODUCT_CATALOG: Kalay Home
+      BUILD_PLATFORM: ios
+      BUILD_OUTPUT_PATH: output
+      REPORT_PATH: reports
+    email_list: 
+      - jian_li@tutk.com
+      - stanley_huang@tutk.com
