@@ -7,7 +7,7 @@ name: iOS_projects
 # repositories
 repos:
   - name: amped_ipad
-    label: xcode8
+    label: "ios && xcode8"
     build_command: fastlane ios build
     environment:
       SRVM_CUSTOMER_IDS: 448
@@ -19,8 +19,8 @@ repos:
       REPORT_PATH: reports
     email_list: 
       - chun_chen@tutk.com
-  - name: xcode8
-    label: ios
+  - name: amped
+    label: "ios && xcode8"
     build_command: fastlane ios build
     environment:
       SRVM_CUSTOMER_IDS: 448
@@ -33,7 +33,7 @@ repos:
     email_list: 
       - chun_chen@tutk.com
   - name: kalay_doorphone_2.0
-    label: ios
+    label: "ios && xcode7"
     build_command: fastlane ios build
     environment:
       SRVM_CUSTOMER_IDS: 504
@@ -45,3 +45,16 @@ repos:
       REPORT_PATH: reports
     email_list: 
       - joe_lo@tutk.com
+  - name: technaxx
+    label: "ios && xcode7"
+    build_command: fastlane ios build
+    environment:
+      SRVM_CUSTOMER_IDS: 504
+      SRVM_RELEASE_FOR: PM
+      SRVM_RELEASE_BY: jian_li
+      SRVM_PRODUCT_CATALOG: 
+      BUILD_PLATFORM: ios
+      BUILD_OUTPUT_PATH: output
+      REPORT_PATH: reports
+    email_list: 
+      - jian_li@tutk.com

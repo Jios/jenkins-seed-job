@@ -26,7 +26,7 @@ repos:
       - yiting_cheng@tutk.com
       - jian_li@tutk.com
   - name: iOS_DataModel
-    label: ios
+    label: "ios && xcode7"
     build_command: fastlane ios build
     environment:
       SRVM_RELEASE_FOR: PM

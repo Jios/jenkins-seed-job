@@ -7,7 +7,7 @@ name: iOS_Vtech
 # repositories
 repos:
   - name: smarthome-baseapp
-    label: ios
+    label: "ios && xcode7"
     build_command: fastlane ios build
     environment:
       SRVM_CUSTOMER_IDS: 422
