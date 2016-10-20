@@ -30,7 +30,7 @@ repos:
     build_command: fastlane ios build
     environment:
       SRVM_RELEASE_FOR: PM
-      SRVM_RELEASE_BY: jian_li
+      SRVM_RELEASE_BY: gore_chiu
       SRVM_PRODUCT_CATALOG: Kalay Home
       BUILD_PLATFORM: ios
       BUILD_OUTPUT_PATH: output

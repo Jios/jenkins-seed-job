@@ -49,15 +49,16 @@ repos:
     label: "ios && xcode7"
     build_command: fastlane ios build
     environment:
-      SRVM_CUSTOMER_IDS: 504
+      SRVM_CUSTOMER_IDS: 88
       SRVM_RELEASE_FOR: PM
       SRVM_RELEASE_BY: jian_li
-      SRVM_PRODUCT_CATALOG: 
+      SRVM_PRODUCT_CATALOG: kalay cam
       BUILD_PLATFORM: ios
       BUILD_OUTPUT_PATH: output
       REPORT_PATH: reports
     email_list: 
       - jian_li@tutk.com
+      - candice_wu@tutk.com
   - name: cwd_piq
     label: "ios && xcode7"
     build_command: fastlane ios build
@@ -65,9 +66,11 @@ repos:
       SRVM_CUSTOMER_IDS: 190
       SRVM_RELEASE_FOR: PM
       SRVM_RELEASE_BY: keith_wang
-      SRVM_PRODUCT_CATALOG: 
+      SRVM_PRODUCT_CATALOG: vsaas
       BUILD_PLATFORM: ios
       BUILD_OUTPUT_PATH: output
       REPORT_PATH: reports
     email_list: 
       - keith_wang@tutk.com
+      - stanley_huang@tutk.com
+      - bill_tsai@tutk.com
