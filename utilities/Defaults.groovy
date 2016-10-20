@@ -80,6 +80,7 @@ class Defaults
 			Publishers publishers = new Publishers()
             publishers.setArchiveArtifacts(delegate, "$repoObject.output_path/*,properties/*.properties")
 
+            Publishers.setJiraIssueUpdater(delegate)
             Publishers.setDownstreamJob(delegate, this.name + "-test")
 
             CommonUtils.addDefaults(delegate, projectObject, repoObject)

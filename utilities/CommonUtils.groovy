@@ -49,7 +49,6 @@ class CommonUtils
 		    // publisher
 	        Publishers publishers = new Publishers()
             publishers.setBrokenBuildClaiming(delegate)
-            publishers.setJiraIssueUpdater(delegate)
             publishers.setJiraIssue(delegate)
             publishers.setSlackNotifier(delegate)
 	        publishers.setMailer(delegate, repoObject.getEmail_list())
