@@ -2,7 +2,7 @@ package utilities
 
 class Publishers
 {
-    void setJiraIssueUpdater(def context)
+    static void setJiraIssueUpdater(def context)
     {
     	context.publishers
     	{
