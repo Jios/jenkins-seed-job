@@ -123,7 +123,6 @@ class Publishers
 			{
 				teamDomain('')
 				authToken('')
-				buildServerUrl('')
 				room('{SLACK_CHANNEL}')
 				startNotification(true)
 				notifySuccess(true)
